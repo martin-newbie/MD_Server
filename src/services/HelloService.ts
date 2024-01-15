@@ -14,8 +14,20 @@ export class HelloService {
     return "hello " + name;
   }
 
+  getHello(id: number) {
+    const hello = this.helloRepository.findOne(id);
+    return hello;
+  }
+
   create(hello: HelloModel) {
     return this.helloRepository.save(hello);
   }
 
+  update(hello: HelloModel) {
+    // return this.helloRepository.
+  }
+
+  getHelloByName(name: string){
+    return this.helloRepository.findByFirstName(name);
+  }
 }

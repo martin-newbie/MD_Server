@@ -19,6 +19,16 @@ export class HelloRepository {
         console.log("================");
     }
 
+    findOne(id: number) {
+        return this.repository.findOneById(id);
+    }
+
+    findByFirstName(name: string) {
+        return this.repository.find(
+            {where: {firstName: name}}
+        );
+    }
+
     save(hello: HelloModel) {
         return this.repository.save(hello);
     }
