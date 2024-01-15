@@ -3,13 +3,12 @@ import {DataSource} from "typeorm";
 import {Logger} from "@tsed/logger";
 import { envs } from "../config/envs";
 import { HelloModel } from "../models/HelloModel";
-import { Order } from "../models/Order";
-import { OrderItem } from "../models/OrderItem";
+import { UserDataModel } from "../models/UserDataModel";
 
 export const MYSQL_DATASOURCE = Symbol.for("MysqlDatasource");
 export const MysqlDatasource = new DataSource({
   type: "mysql",
-  entities: [HelloModel, Order, OrderItem],
+  entities: [HelloModel, UserDataModel],
   host: "localhost",
   port: 3306,
   username: "ksmin",
