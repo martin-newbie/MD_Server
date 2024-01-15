@@ -1,18 +1,22 @@
 import {registerProvider} from "@tsed/di";
 import {DataSource} from "typeorm";
 import {Logger} from "@tsed/logger";
-import { envs } from "src/config/envs";
+import { envs } from "../config/envs";
+import { HelloModel } from "../models/HelloModel";
+import { Order } from "../models/Order";
+import { OrderItem } from "../models/OrderItem";
 
 export const MYSQL_DATASOURCE = Symbol.for("MysqlDatasource");
 export const MysqlDatasource = new DataSource({
   type: "mysql",
-  entities: [],
+  entities: [HelloModel, Order, OrderItem],
   host: "localhost",
   port: 3306,
-  //@ts-ignore
-  username: envs.database.username,
-  password: "test",
-  database: "test"
+  username: "ksmin",
+  password: "password",
+  database: "proj_md",
+  synchronize: true,
+  logging: true
 });
 
 registerProvider<DataSource>({
