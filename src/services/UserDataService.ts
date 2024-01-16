@@ -19,7 +19,9 @@ export class UserDataService{
         const exist = await this.userDataRepository.isUserNicknameExist(nickname);
         if (exist) {
             // login
-            return this.userDataRepository.findUserByNickname(nickname);
+            const userData = await this.userDataRepository.findUserByNickname(nickname);
+            console.log("find existing user : \n" + userData);
+            return userData;
         }else{
             // create new
             const userData = new UserDataModel();
@@ -30,6 +32,7 @@ export class UserDataService{
             userData.userLevel = 0;
             userData.userExp = 0;
             this.userDataRepository.addNewUser(userData);
+            console.log("create new user : \n" + userData);
             return userData;
         }
     }

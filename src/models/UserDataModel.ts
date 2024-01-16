@@ -16,14 +16,18 @@ export class UserDataModel{
     userNickname: string;
 
     @Column({default: 0})
+    @Required()
     userLevel: number;
 
     @Column({default: 0})
+    @Required()
     userExp: number;
 
     @Column({default: 0})
+    @Required()
     userDia: number;
 
     @Column({default: 0})
+    @Required()
     userCoin: number;
 }

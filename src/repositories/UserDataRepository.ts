@@ -11,7 +11,7 @@ export class UserDataRepository {
     private repository: Repository<UserDataModel>;
 
     $onInit() {
-
+        this.repository = this.dataSource.getRepository(UserDataModel);
     }
 
     findUserByUUID(uuid: string) {
