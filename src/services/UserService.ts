@@ -39,12 +39,12 @@ export class UserService{
         } else {
             // create new
             const userData = new User();
-            userData.userNickname = nickname;
+            userData.nickname = nickname;
             userData.uuid = randomUUID();
-            userData.userCoin = 100000;
-            userData.userDia = 1200;
-            userData.userLevel = 0;
-            userData.userExp = 0;
+            userData.coin = 100000;
+            userData.dia = 1200;
+            userData.level = 0;
+            userData.exp = 0;
 
             userData.addUnit(new Unit(2));
             userData.addUnit(new Unit(1));

@@ -13,27 +13,26 @@ export class User{
 
     @Column()
     @Required()
-    userNickname: string;
+    nickname: string;
 
     @Column({default: 0})
     @Required()
-    userLevel: number;
+    level: number;
 
     @Column({default: 0})
     @Required()
-    userExp: number;
+    exp: number;
 
     @Column({default: 0})
     @Required()
-    userDia: number;
+    dia: number;
 
     @Column({default: 0})
     @Required()
-    userCoin: number;
+    coin: number;
 
     @OneToMany(() => Unit, (units) => units.user, { eager: true, cascade: ['insert'] })
     units: Unit[];
-
 
     addUnit(unit: Unit) {
         if (this.units == null) {

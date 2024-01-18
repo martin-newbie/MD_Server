@@ -19,7 +19,7 @@ export class UserRepository {
     }
 
     findUserByNickname(nickname: string) {
-        return this.repository.findOne({ where: { userNickname: nickname } });
+        return this.repository.findOne({ where: { nickname: nickname } });
     }
 
     addNewUser(userData: User) {
@@ -27,6 +27,6 @@ export class UserRepository {
     }
 
     isUserNicknameExist(nickname: string) {
-        return this.repository.exists({ where: { userNickname: nickname } });
+        return this.repository.exists({ where: { nickname: nickname } });
     }
 }
