@@ -1,5 +1,5 @@
 import {MaxLength, Maximum, Minimum, Property, Required} from "@tsed/schema";
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Order } from './Order';
 
 

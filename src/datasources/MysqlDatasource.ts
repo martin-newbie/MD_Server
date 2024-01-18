@@ -1,14 +1,16 @@
-import {registerProvider} from "@tsed/di";
-import {DataSource} from "typeorm";
-import {Logger} from "@tsed/logger";
-import { envs } from "../config/envs";
-import { HelloModel } from "../models/HelloModel";
-import { UserDataModel } from "../models/UserDataModel";
+import { registerProvider } from "@tsed/di";
+import { DataSource } from "typeorm";
+import { Logger } from "@tsed/logger";
+
+export const rootDir = __dirname;
+
 
 export const MYSQL_DATASOURCE = Symbol.for("MysqlDatasource");
 export const MysqlDatasource = new DataSource({
   type: "mysql",
-  entities: [HelloModel, UserDataModel],
+  entities: [
+    `${rootDir}/../entities/*{.ts,.js}`
+  ],
   host: "localhost",
   port: 3306,
   username: "ksmin",
