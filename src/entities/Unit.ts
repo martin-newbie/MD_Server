@@ -22,7 +22,7 @@ export class Unit {
     @Required()
     level: number;
 
-    @ManyToOne(() => User, (user) => user.units)
+    @ManyToOne(type => User, (user) => user.units)
     @JoinColumn({ name: "user_uuid", referencedColumnName: "uuid" })
     user: User;
 }

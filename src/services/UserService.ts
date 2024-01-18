@@ -4,7 +4,7 @@ import { User } from "../entities/User";
 import { Unit } from "../entities/Unit";
 import { UserRepository } from "../repositories/UserRepository";
 import { UnitRepository } from "../repositories/UnitRepository";
-import { DataSource, Repository } from "typeorm";
+import { DataSource } from "typeorm";
 import { MYSQL_DATASOURCE } from "../datasources/MysqlDatasource";
 
 @Injectable()
@@ -34,7 +34,7 @@ export class UserService{
         if (exist) {
             // login
             const userData = await this.userRepository.findUserByNickname(nickname);
-            console.log("find existing user : \n" + userData);
+            console.log("find existing user");
             return userData;
         } else {
             // create new
@@ -53,8 +53,7 @@ export class UserService{
             userData.addUnit(new Unit(6));
             
             await this.userRepository.addNewUser(userData);
-
-            console.log("create new user : \n" + userData);
+            console.log("create new user");
             return userData;
         }
     }

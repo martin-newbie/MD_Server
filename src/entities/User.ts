@@ -31,7 +31,7 @@ export class User{
     @Required()
     coin: number;
 
-    @OneToMany(() => Unit, (units) => units.user, { eager: true, cascade: ['insert'] })
+    @OneToMany(type => Unit, (units) => units.user, { eager: true, cascade: ['insert'] })
     units: Unit[];
 
     addUnit(unit: Unit) {
