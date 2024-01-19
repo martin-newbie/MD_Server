@@ -13,7 +13,7 @@ export class User{
     @Column()
     uuid: string;
 
-    @Column()
+    @Column({default: ""})
     @Required()
     nickname: string;
 
