@@ -19,7 +19,10 @@ export class UserRepository {
     }
 
     findUserByNickname(nickname: string) {
-        return this.repository.findOne({ where: { nickname: nickname } });
+        return this.repository.findOne({
+            where: { nickname: nickname },
+            relations: ['units']
+        });
     }
 
     addNewUser(userData: User) {

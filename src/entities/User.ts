@@ -1,6 +1,7 @@
-import { Property, Required } from "@tsed/schema";
-import { Column, Entity, ManyToOne, OneToMany, PrimaryColumn, PrimaryGeneratedColumn, Unique } from "typeorm";
+import { CollectionOf, Property, Required } from "@tsed/schema";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn, PrimaryGeneratedColumn, Unique } from "typeorm";
 import { Unit } from "./Unit";
+import { OnSerialize } from "@tsed/json-mapper";
 
 @Entity({name: 'user'})
 @Unique('user_uuid', ['uuid'])
@@ -8,6 +9,7 @@ export class User{
     @PrimaryGeneratedColumn()
     id: number
 
+    @PrimaryColumn()
     @Column()
     uuid: string;
 
@@ -31,7 +33,10 @@ export class User{
     @Required()
     coin: number;
 
-    @OneToMany(type => Unit, (units) => units.user, { eager: true, cascade: ['insert'] })
+    // @Property()
+    @CollectionOf(Unit)
+    @OneToMany(type => Unit, (units) => units.user, { cascade: ['insert'] })
+    @JoinColumn({ name: 'uuid', referencedColumnName: 'user_uuid' })
     units: Unit[];
 
     addUnit(unit: Unit) {

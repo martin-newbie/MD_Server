@@ -1,4 +1,4 @@
-import { Required } from '@tsed/schema';
+import { Groups, Ignore, Property, Required } from '@tsed/schema';
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { User } from './User';
 
@@ -22,7 +22,10 @@ export class Unit {
     @Required()
     level: number;
 
-    @ManyToOne(type => User, (user) => user.units)
+    @Column()
+    user_uuid: string;
+
+    @ManyToOne(() => User, (user) => user.units, {})
     @JoinColumn({ name: "user_uuid", referencedColumnName: "uuid" })
     user: User;
 }
