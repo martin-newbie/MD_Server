@@ -52,7 +52,7 @@ export class UserService{
             userData.addUnit(new Unit(12));
             userData.addUnit(new Unit(6));
             
-            // await this.userRepository.addNewUser(userData);
+            await this.userRepository.addNewUser(userData);
             console.log("create new user");
             return userData;
         }

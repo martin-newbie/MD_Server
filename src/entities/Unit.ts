@@ -22,6 +22,10 @@ export class Unit {
     @Required()
     level: number;
 
+    @Column({default: 0})
+    @Required()
+    exp: number;
+
     @Column()
     user_uuid: string;
 
