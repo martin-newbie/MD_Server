@@ -12,6 +12,7 @@ export class Unit {
     }
 
     @PrimaryGeneratedColumn()
+    @Required()
     id: number;
 
     @Column({default: 0})

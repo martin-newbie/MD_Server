@@ -7,10 +7,12 @@ import { OnSerialize } from "@tsed/json-mapper";
 @Unique('user_uuid', ['uuid'])
 export class User{
     @PrimaryGeneratedColumn()
+    @Required()
     id: number
 
     @PrimaryColumn()
     @Column()
+    @Required()
     uuid: string;
 
     @Column({default: ""})

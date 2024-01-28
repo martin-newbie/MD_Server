@@ -3,4 +3,6 @@
  */
 
 export * from "./HelloWorldController";
+export * from "./TestModeGameController";
+export * from "./TestModeLoadoutController";
 export * from "./UserController";

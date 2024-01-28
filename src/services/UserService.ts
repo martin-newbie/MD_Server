@@ -46,11 +46,11 @@ export class UserService{
             userData.level = 0;
             userData.exp = 0;
 
-            userData.addUnit(new Unit(2));
+            userData.addUnit(new Unit(0));
             userData.addUnit(new Unit(1));
-            userData.addUnit(new Unit(5));
-            userData.addUnit(new Unit(12));
+            userData.addUnit(new Unit(2));
             userData.addUnit(new Unit(6));
+            userData.addUnit(new Unit(12));
             
             await this.userRepository.addNewUser(userData);
             console.log("create new user");
