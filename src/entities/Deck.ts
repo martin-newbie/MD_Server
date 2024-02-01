@@ -1,7 +1,8 @@
 import { Required } from "@tsed/schema";
-import { Column, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
-export abstract class Deck {
+@Entity({name: 'deck'})
+export class Deck {
 
     @PrimaryGeneratedColumn()
     @Required()
@@ -33,4 +34,8 @@ export abstract class Deck {
     @Column({ default: -1 })
     @Required()
     unit5: number;
+    
+    @Column()
+    @Required()
+    deck_index: number;
 }

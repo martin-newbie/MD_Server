@@ -1,6 +1,6 @@
 import { Inject, Injectable } from "@tsed/di";
 import { MYSQL_DATASOURCE } from "../datasources/MysqlDatasource";
-import { TestDeck } from "../entities/TestDeck";
+import { Deck } from "../entities/Deck";
 import { DataSource, Repository } from "typeorm";
 
 @Injectable()
@@ -8,24 +8,24 @@ export class TestLoadoutService {
     @Inject(MYSQL_DATASOURCE)
     datasource: DataSource;
 
-    protected testDeckRepos: Repository<TestDeck>;
+    protected deckRepos: Repository<Deck>;
 
     $onInit() {
-        this.testDeckRepos = this.datasource.getRepository(TestDeck);
+        this.deckRepos = this.datasource.getRepository(Deck);
     }
 
-    async getTestDecks(uuid: string) {
-        const decks = await this.testDeckRepos.find({
+    async getDecks(uuid: string) {
+        const decks = await this.deckRepos.find({
             where: { user_uuid: uuid },
         });
 
         if (decks.length === 0) {
             for (let i = 0; i < 4; i++) {
-                const deck = new TestDeck();
+                const deck = new Deck();
                 deck.user_uuid = uuid;
                 deck.deck_index = i;
                 deck.unit_indexes = [-1, -1, -1, -1, -1];
-                await this.testDeckRepos.save(deck);
+                await this.deckRepos.save(deck);
                 decks.push(deck);
             }
         }
@@ -37,13 +37,13 @@ export class TestLoadoutService {
         return decks;
     }
 
-    async updateTestDeck(deck: TestDeck) {
-        const exists = await this.testDeckRepos.findOne(
+    async updateDeck(deck: Deck) {
+        const exists = await this.deckRepos.findOne(
             { where: { id: deck.id} }
         );
 
         if (exists) {
-            await this.testDeckRepos.update(
+            await this.deckRepos.update(
                 { id: deck.id },
                 {
                     unit1: deck.unit1,
@@ -54,7 +54,7 @@ export class TestLoadoutService {
                 }
             );
         } else {
-            await this.testDeckRepos.save(deck);
+            await this.deckRepos.save(deck);
         }
     }
 }
