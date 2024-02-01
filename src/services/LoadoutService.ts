@@ -4,7 +4,7 @@ import { Deck } from "../entities/Deck";
 import { DataSource, Repository } from "typeorm";
 
 @Injectable()
-export class TestLoadoutService {
+export class LoadoutService {
     @Inject(MYSQL_DATASOURCE)
     datasource: DataSource;
 
@@ -34,7 +34,7 @@ export class TestLoadoutService {
             deck.unit_indexes = [deck.unit1, deck.unit2, deck.unit3, deck.unit4, deck.unit5];
         });
 
-        return decks;
+        return decks;   
     }
 
     async updateDeck(deck: Deck) {

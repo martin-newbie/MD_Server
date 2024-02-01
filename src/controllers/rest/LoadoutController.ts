@@ -2,12 +2,12 @@ import { Controller, Inject } from "@tsed/di";
 import { BodyParams, QueryParams } from "@tsed/platform-params";
 import { Get, Post, Put, string } from "@tsed/schema";
 import { Deck } from "../../entities/Deck";
-import { TestLoadoutService } from "../../services/TestLoadoutService";
+import { LoadoutService } from "../../services/LoadoutService";
 
 @Controller("/test-loadout")
-export class TestModeLoadoutController {
+export class LoadoutController {
     @Inject()
-    protected loadoutService: TestLoadoutService;
+    protected loadoutService: LoadoutService;
 
     @Post("/deck-enter")
     async deck(@BodyParams("input_data") uuid: string) {
