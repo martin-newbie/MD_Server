@@ -28,6 +28,7 @@ export class LoadoutController {
     @Post("/deck-add")
     async addDeck(@BodyParams("input_data") uuid: string){
         const deck = await this.loadoutService.addDeck(uuid);
-        return deck;
+        console.log(deck);
+        return { "deck": deck };
     }
 }

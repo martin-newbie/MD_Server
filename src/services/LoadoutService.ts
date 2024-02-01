@@ -19,7 +19,7 @@ export class LoadoutService {
     }
 
     async getDecks(uuid: string) {
-        let user = await this.userRepos.findOne({ 
+        const user = await this.userRepos.findOne({ 
             where: { uuid: uuid },  
             relations: ['decks']
         });
@@ -27,7 +27,7 @@ export class LoadoutService {
             return;
         }
 
-        let decks = user.decks;
+        const decks = user.decks;
         decks.forEach(deck => {
             deck.unit_indexes = [deck.unit1, deck.unit2, deck.unit3, deck.unit4, deck.unit5];
         });
@@ -67,6 +67,9 @@ export class LoadoutService {
         const deck_index = user.decks.length;
         user.addDeck(new Deck(deck_index));
         await this.userRepos.save(user);
-        return user.decks[deck_index];
+
+        const deck = user.decks[deck_index];
+        deck.unit_indexes = [deck.unit1, deck.unit2, deck.unit3, deck.unit4, deck.unit5];
+        return deck;
     }
 }
