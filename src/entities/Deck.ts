@@ -1,41 +1,44 @@
 import { Required } from "@tsed/schema";
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { User } from "./User";
 
-@Entity({name: 'deck'})
+@Entity({ name: 'deck' })
 export class Deck {
+
+    constructor(_deck_index: number){
+        this.deck_index = _deck_index;
+    }
 
     @PrimaryGeneratedColumn()
     @Required()
     id: number;
 
-    @Column({default: ""})
+    @Column({default: 0})
     @Required()
-    user_uuid: string;
+    deck_index: number;
+    
+    @Column({ default: -1 })
+    unit1: number;
+    
+    @Column({ default: -1 })
+    unit2: number;
+    
+    @Column({ default: -1 })
+    unit3: number;
+    
+    @Column({ default: -1 })
+    unit4: number;
+    
+    @Column({ default: -1 })
+    unit5: number;
 
     @Required()
     unit_indexes: number[];
-
-    @Column({ default: -1 })
-    @Required()
-    unit1: number;
-
-    @Column({ default: -1 })
-    @Required()
-    unit2: number;
-
-    @Column({ default: -1 })
-    @Required()
-    unit3: number;
-
-    @Column({ default: -1 })
-    @Required()
-    unit4: number;
-
-    @Column({ default: -1 })
-    @Required()
-    unit5: number;
     
     @Column()
-    @Required()
-    deck_index: number;
+    user_uuid: string;
+
+    @ManyToOne(() => User, user => user.decks, {})
+    @JoinColumn({ name: "user_uuid", referencedColumnName: "uuid" })
+    user: User;
 }

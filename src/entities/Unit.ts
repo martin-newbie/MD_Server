@@ -1,4 +1,4 @@
-import { Groups, Ignore, Property, Required } from '@tsed/schema';
+import { Required } from '@tsed/schema';
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { User } from './User';
 

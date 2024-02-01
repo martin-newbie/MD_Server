@@ -6,6 +6,7 @@ import { UserRepository } from "../repositories/UserRepository";
 import { UnitRepository } from "../repositories/UnitRepository";
 import { DataSource } from "typeorm";
 import { MYSQL_DATASOURCE } from "../datasources/MysqlDatasource";
+import { Deck } from "../entities/Deck";
 
 @Injectable()
 export class UserService{
@@ -35,6 +36,9 @@ export class UserService{
             // login
             const userData = await this.userRepository.findUserByNickname(nickname);
             console.log("find existing user");
+            userData?.units.forEach(unit => {
+                unit.skill_level = [unit.skill_level_0, unit.skill_level_1, unit.skill_level_2, unit.skill_level_3];
+            });
             return userData;
         } else {
             // create new
@@ -51,6 +55,7 @@ export class UserService{
             userData.addUnit(new Unit(2));
             userData.addUnit(new Unit(6));
             userData.addUnit(new Unit(12));
+            userData.addDeck(new Deck(0));
             
             await this.userRepository.addNewUser(userData);
             console.log("create new user");

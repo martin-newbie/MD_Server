@@ -1,11 +1,11 @@
 import { CollectionOf, Property, Required } from "@tsed/schema";
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn, PrimaryGeneratedColumn, Unique } from "typeorm";
+import { Column, DriverPackageNotInstalledError, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn, PrimaryGeneratedColumn, Unique } from "typeorm";
 import { Unit } from "./Unit";
-import { OnSerialize } from "@tsed/json-mapper";
+import { Deck } from "./Deck";
 
-@Entity({name: 'user'})
+@Entity({ name: 'user' })
 @Unique('user_uuid', ['uuid'])
-export class User{
+export class User {
     @PrimaryGeneratedColumn()
     @Required()
     id: number
@@ -15,23 +15,23 @@ export class User{
     @Required()
     uuid: string;
 
-    @Column({default: ""})
+    @Column({ default: "" })
     @Required()
     nickname: string;
 
-    @Column({default: 0})
+    @Column({ default: 0 })
     @Required()
     level: number;
 
-    @Column({default: 0})
+    @Column({ default: 0 })
     @Required()
     exp: number;
 
-    @Column({default: 0})
+    @Column({ default: 0 })
     @Required()
     dia: number;
 
-    @Column({default: 0})
+    @Column({ default: 0 })
     @Required()
     coin: number;
 
@@ -41,6 +41,11 @@ export class User{
     @JoinColumn({ name: 'uuid', referencedColumnName: 'user_uuid' })
     units: Unit[];
 
+    @CollectionOf(Deck)
+    @OneToMany(type => Deck, (deck) => deck.user, { cascade: ['insert'] })
+    @JoinColumn({ name: 'uuid', referencedColumnName: "user_uuid" })
+    decks: Deck[];
+
     addUnit(unit: Unit) {
         if (this.units == null) {
             this.units = [];
@@ -48,6 +53,15 @@ export class User{
 
         this.units.push(unit);
         unit.user = this;
+    }
+
+    addDeck(deck: Deck){
+        if(this.decks == null){
+            this.decks = [];
+        }
+
+        this.decks.push(deck);
+        deck.user = this;
     }
 
 }

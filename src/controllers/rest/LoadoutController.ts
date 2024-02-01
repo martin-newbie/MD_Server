@@ -4,7 +4,7 @@ import { Get, Post, Put, string } from "@tsed/schema";
 import { Deck } from "../../entities/Deck";
 import { LoadoutService } from "../../services/LoadoutService";
 
-@Controller("/test-loadout")
+@Controller("/loadout")
 export class LoadoutController {
     @Inject()
     protected loadoutService: LoadoutService;
