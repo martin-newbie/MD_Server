@@ -34,23 +34,6 @@ export class LoadoutService {
             console.log("deck is null");
             throw Exception;
         }
-
-        // if (decks == null) {
-        //     decks = [];
-        //     console.log("[ERROR] deck is empty, it could not be");
-        // }
-        
-        // if (decks.length === 0) {
-        //     const deck = new Deck(0);
-        //     deck.user_uuid = uuid;
-        //     deck.unit1 = -1;
-        //     deck.unit2 = -1;
-        //     deck.unit3 = -1;
-        //     deck.unit4 = -1;
-        //     deck.unit5 = -1;
-        //     user.addDeck(deck);
-        //     decks = [deck];
-        // }
         
         decks.forEach(deck => {
             deck.unit_indexes = [deck.unit1, deck.unit2, deck.unit3, deck.unit4, deck.unit5];
