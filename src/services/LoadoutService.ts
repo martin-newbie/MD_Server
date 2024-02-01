@@ -26,15 +26,8 @@ export class LoadoutService {
         if(user == null){
             return;
         }
-        console.log(user);
-
 
         let decks = user.decks;
-        if(decks == null){
-            console.log("deck is null");
-            throw Exception;
-        }
-        
         decks.forEach(deck => {
             deck.unit_indexes = [deck.unit1, deck.unit2, deck.unit3, deck.unit4, deck.unit5];
         });
@@ -59,5 +52,21 @@ export class LoadoutService {
         } else {
             await this.deckRepos.save(deck);
         }
+    }
+
+    async addDeck(uuid: string){
+        const user = await this.userRepos.findOne({
+            where: {uuid: uuid},
+            relations: ['decks']
+        });
+
+        if(user == null){
+            return;
+        }
+
+        const deck_index = user.decks.length;
+        user.addDeck(new Deck(deck_index));
+        await this.userRepos.save(user);
+        return user.decks[deck_index];
     }
 }
