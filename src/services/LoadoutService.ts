@@ -24,7 +24,7 @@ export class LoadoutService {
             relations: ['decks']
         });
         if(user == null){
-            return;
+            return; 
         }
 
         const decks = user.decks;
