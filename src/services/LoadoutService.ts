@@ -91,9 +91,10 @@ export class LoadoutService {
     async updateDeckTitle(data: string) {
         const changes: RecieveTitleChange = JSON.parse(data);
         await this.deckRepos.update(
-            {id: changes.index},
+            {id: changes.id},
             {title: changes.title}
         );
+        return changes;
     }
 }
 
@@ -102,6 +103,6 @@ export class RecieveDecks{
 }
 
 export class RecieveTitleChange{
-    index: number;
+    id: number;
     title: string;
 }
