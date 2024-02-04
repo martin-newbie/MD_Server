@@ -31,4 +31,10 @@ export class LoadoutController {
         console.log(deck);
         return { "deck": deck };
     }
+
+    @Post("/deck-save-all")
+    async deckSaveAll(@BodyParams("input_data") input_data: string) {
+        await this.loadoutService.saveAllDeck(input_data);
+        return null;
+    }
 }

@@ -3,7 +3,6 @@ import { MYSQL_DATASOURCE } from "../datasources/MysqlDatasource";
 import { Deck } from "../entities/Deck";
 import { DataSource, Repository } from "typeorm";
 import { User } from "../entities/User";
-import { Exception } from "@tsed/exceptions";
 
 @Injectable()
 export class LoadoutService {
@@ -72,4 +71,24 @@ export class LoadoutService {
         deck.unit_indexes = [deck.unit1, deck.unit2, deck.unit3, deck.unit4, deck.unit5];
         return deck;
     }
+
+    async saveAllDeck(data: string) {
+        const decks: RecieveDecks = JSON.parse(data);
+        for (const deck of decks.decks) {
+            await this.deckRepos.update(
+                { id: deck.id },
+                {
+                    unit1: deck.unit_indexes[0],
+                    unit2: deck.unit_indexes[1],
+                    unit3: deck.unit_indexes[2],
+                    unit4: deck.unit_indexes[3],
+                    unit5: deck.unit_indexes[4],
+                }
+            );
+        }
+    }
+}
+
+export class RecieveDecks{
+    decks: Deck[] = [];
 }
