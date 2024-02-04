@@ -1,4 +1,4 @@
-import { Required } from "@tsed/schema";
+import { Required, string } from "@tsed/schema";
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { User } from "./User";
 
@@ -7,6 +7,7 @@ export class Deck {
 
     constructor(_deck_index: number){
         this.deck_index = _deck_index;
+        this.title = "deck-" + _deck_index?.toString();
     }
 
     @PrimaryGeneratedColumn()
@@ -16,6 +17,10 @@ export class Deck {
     @Column({default: 0})
     @Required()
     deck_index: number;
+
+    @Column({default: "deck"})
+    @Required()
+    title: string;
     
     @Column({ default: -1 })
     unit1: number;

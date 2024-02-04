@@ -87,8 +87,21 @@ export class LoadoutService {
             );
         }
     }
+
+    async updateDeckTitle(data: string) {
+        const changes: RecieveTitleChange = JSON.parse(data);
+        await this.deckRepos.update(
+            {id: changes.index},
+            {title: changes.title}
+        );
+    }
 }
 
 export class RecieveDecks{
     decks: Deck[] = [];
+}
+
+export class RecieveTitleChange{
+    index: number;
+    title: string;
 }

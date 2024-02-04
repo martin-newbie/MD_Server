@@ -37,4 +37,10 @@ export class LoadoutController {
         await this.loadoutService.saveAllDeck(input_data);
         return null;
     }
+
+    @Post("/change-title")
+    async changeDeckTitle(@BodyParams("input_data") input_data: string){
+        const changes = await this.loadoutService.updateDeckTitle(input_data);
+        return changes.title;
+    }
 }
