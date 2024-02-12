@@ -6,6 +6,8 @@ export const rootDir = __dirname;
 
 
 const db_name = process.env.DB_NAME || 'localhost';
+const db_user = process.env.DB_USER || 'ksmin';
+const db_pass = process.env.DB_PASS || 'password';
 
 export const MYSQL_DATASOURCE = Symbol.for("MysqlDatasource");
 export const MysqlDatasource = new DataSource({
@@ -15,8 +17,8 @@ export const MysqlDatasource = new DataSource({
   ],
   host: db_name,
   port: 3306,
-  username: "ksmin",
-  password: "password",
+  username: db_user,
+  password: db_pass,
   database: "proj_md",
   synchronize: true,
   logging: true
