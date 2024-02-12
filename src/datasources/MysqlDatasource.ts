@@ -5,13 +5,15 @@ import { Logger } from "@tsed/logger";
 export const rootDir = __dirname;
 
 
+const db_name = process.env.DB_NAME || 'localhost';
+
 export const MYSQL_DATASOURCE = Symbol.for("MysqlDatasource");
 export const MysqlDatasource = new DataSource({
   type: "mysql",
   entities: [
     `${rootDir}/../entities/*{.ts,.js}`
   ],
-  host: "localhost",
+  host: db_name,
   port: 3306,
   username: "ksmin",
   password: "password",
