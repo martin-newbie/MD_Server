@@ -1,7 +1,7 @@
 import { Controller, Inject } from "@tsed/di";
 import { BodyParams } from "@tsed/platform-params";
 import { Post } from "@tsed/schema";
-import { InGameService } from "src/services/IngameService";
+import { InGameService } from "../../services/IngameService";
 
 @Controller("/ingame")
 export class InGameController {

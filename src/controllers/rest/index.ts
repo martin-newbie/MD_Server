@@ -4,6 +4,6 @@
 
 export * from "./GameMenuController";
 export * from "./HelloWorldController";
+export * from "./InGameController";
 export * from "./LoadoutController";
-export * from "./TestModeGameController";
 export * from "./UserController";
