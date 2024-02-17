@@ -1,12 +1,12 @@
 import { Controller, Inject } from "@tsed/di";
 import { BodyParams } from "@tsed/platform-params";
 import { Post } from "@tsed/schema";
-import { TestIngameService } from "../../services/TestIngameService";
+import { InGameService } from "src/services/IngameService";
 
-@Controller("/test-ingame")
-export class TestModeGameController {
+@Controller("/ingame")
+export class InGameController {
     @Inject()
-    protected ingameService: TestIngameService;
+    protected ingameService: InGameService;
 
     @Post("/game-enter")
     async gameEnter(@BodyParams("input_data") input_data: string) {

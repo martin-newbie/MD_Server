@@ -4,7 +4,7 @@ import { Deck } from "../entities/Deck";
 import { DataSource, Repository } from "typeorm";
 
 @Injectable()
-export class TestIngameService{
+export class InGameService{
     @Inject(MYSQL_DATASOURCE)
     datasource: DataSource;
 
