@@ -22,6 +22,10 @@ export class Unit {
 
     @Column({default: 0})
     @Required()
+    rank: number;
+
+    @Column({default: 0})
+    @Required()
     level: number;
 
     @Column({default: 0})
