@@ -3,6 +3,7 @@ import { Column, Entity, JoinColumn, OneToMany, PrimaryColumn, PrimaryGeneratedC
 import { Unit } from "./Unit";
 import { Deck } from "./Deck";
 import { Exception } from "@tsed/exceptions";
+import { StagePerfaction } from "./StagePerfaction";
 
 @Entity({ name: 'user' })
 @Unique('user_uuid', ['uuid'])
@@ -44,7 +45,6 @@ export class User {
     @Required()
     last_energy_updated: Date;
 
-    // @Property()
     @CollectionOf(Unit)
     @OneToMany(type => Unit, (units) => units.user, { cascade: ['insert'] })
     @JoinColumn({ name: 'uuid', referencedColumnName: 'user_uuid' })
@@ -54,6 +54,11 @@ export class User {
     @OneToMany(type => Deck, (deck) => deck.user, { cascade: ['insert'] })
     @JoinColumn({ name: 'uuid', referencedColumnName: "user_uuid" })
     decks: Deck[];
+
+    @CollectionOf(StagePerfaction)
+    @OneToMany(type=> StagePerfaction, (stagePerfaction) => stagePerfaction.user, {cascade: ['insert']})
+    @JoinColumn({name: 'uuid', referencedColumnName: 'user_uuid'})
+    stage_perfactions: StagePerfaction[];
 
     addUnit(unit: Unit) {
         if (this.units == null) {
@@ -72,6 +77,16 @@ export class User {
         this.decks.push(deck);
         deck.user = this;
     }
+
+    addStagePerfaction(stagePerfaction: StagePerfaction){
+        if(this.stage_perfactions === null){
+            this.stage_perfactions = [];
+        }
+
+        this.stage_perfactions.push(stagePerfaction);
+        stagePerfaction.user = this;
+    }
+
 
     getEnergy(): number {
         const now = new Date();

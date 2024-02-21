@@ -2,6 +2,7 @@ import { Controller, Inject } from "@tsed/di";
 import { BodyParams } from "@tsed/platform-params";
 import { Post } from "@tsed/schema";
 import { InGameService } from "../../services/IngameService";
+import { Exception } from "@tsed/exceptions";
 
 @Controller("/ingame")
 export class InGameController {
@@ -38,8 +39,20 @@ export class InGameController {
     }
 
     @Post("/game-end")
-    async gameEnd(@BodyParams("input_data") input_data: string) {
+    async gameEnd(@BodyParams("input_data") data: any) {
 
+        const user = await this.ingameService.getUser(data.uuid);
+
+        if(user === null) {
+            throw Exception;
+        }
+
+
+        if (data.is_win) {
+            
+        } else {
+            user.updateEnergy(Math.floor(data.use_energy * 0.9));
+        }
     }
 }
 
