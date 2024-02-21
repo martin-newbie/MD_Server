@@ -59,7 +59,7 @@ export class UserService{
             userData.addUnit(new Unit(12));
             userData.addDeck(new Deck(0));
             
-            await this.userRepository.addNewUser(userData);
+            await this.userRepository.saveUser(userData);
             console.log("create new user");
             return userData;
         }

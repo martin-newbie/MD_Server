@@ -25,7 +25,7 @@ export class UserRepository {
         });
     }
 
-    addNewUser(userData: User) {
+    saveUser(userData: User) {
         return this.repository.save(userData);
     }
 

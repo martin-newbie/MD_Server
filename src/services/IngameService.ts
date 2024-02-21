@@ -5,6 +5,8 @@ import { DataSource, Repository } from "typeorm";
 import { UserRepository } from "../repositories/UserRepository";
 import { StagePerfaction } from "../entities/StagePerfaction";
 import { Unit } from "../entities/Unit";
+import { Exception } from "@tsed/exceptions";
+import { User } from "src/entities/User";
 
 @Injectable()
 export class InGameService{
@@ -33,11 +35,27 @@ export class InGameService{
     }
 
     async getUser(uuid: string) {
-        return await this.userRepository.findUserByUUID(uuid);
+        const user = await this.userRepository.findUserByUUID(uuid);
+        if(user === null) {
+            throw Exception;
+        }
+        return user;
+    }
+
+    async saveUser(user: User) {
+        await this.userRepository.saveUser(user);
+    }
+
+    async saveUnit(unit: Unit) {
+        await this.unitRepos.save(unit);
     }
 
     async getUnit(id: number){
-        return await this.unitRepos.findOne({where: {id: id}});
+        const unit = await this.unitRepos.findOne({where: {id: id}});
+        if(unit === null) {
+            throw Exception;
+        }
+        return unit;
     }
 
     async updateStagePerfaction(uuid: string, stage_index: number, chapter_index: number, perfaction: boolean[]) {

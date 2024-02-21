@@ -54,7 +54,8 @@ export class InGameController {
             resultExp = data.use_energy;
 
             const user = await this.ingameService.getUser(data.uuid);
-            user?.updateExp(resultExp);
+            user.updateExp(resultExp);
+            this.ingameService.saveUser(user);
 
             const deck = await this.ingameService.getGameDeck(data.uuid, data.deck_index);
             for (let i = 0; i < deck.unit_indexes.length; i++) {
@@ -62,7 +63,8 @@ export class InGameController {
 
                 if(unitId != -1){
                     const unit = await this.ingameService.getUnit(unitId);
-                    unit?.updateExp(resultExp);
+                    unit.updateExp(resultExp);
+                    this.ingameService.saveUnit(unit);
                 }
             }
 
