@@ -47,12 +47,20 @@ export class InGameController {
             throw Exception;
         }
 
-
+        let resultExp = 0;
         if (data.is_win) {
-            
+            this.ingameService.updateStagePerfaction(data.uuid, data.stage_index, data.chapter_index, data.perfaction);
+            resultExp = data.use_energy;
         } else {
-            user.updateEnergy(Math.floor(data.use_energy * 0.9));
+            // TODO : add 90% energy as item
         }
+
+
+        return {
+            "exp": resultExp,
+            "reward": [],
+        }
+
     }
 }
 
