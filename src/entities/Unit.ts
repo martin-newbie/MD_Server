@@ -53,4 +53,9 @@ export class Unit {
     @ManyToOne(() => User, (user) => user.units, {})
     @JoinColumn({ name: "user_uuid", referencedColumnName: "uuid" })
     user: User;
+
+    updateExp(extra: number){
+        // TODO : add exp table and add level up
+        this.exp += extra;
+    }
 }

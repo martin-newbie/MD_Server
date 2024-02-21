@@ -60,6 +60,11 @@ export class User {
     @JoinColumn({name: 'uuid', referencedColumnName: 'user_uuid'})
     stage_perfactions: StagePerfaction[];
 
+    updateExp(extra: number) {
+        // TODO: add exp table and add level up
+        this.exp += extra;
+    }
+
     addUnit(unit: Unit) {
         if (this.units == null) {
             this.units = [];

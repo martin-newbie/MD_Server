@@ -3,6 +3,7 @@ import { BodyParams } from "@tsed/platform-params";
 import { Post } from "@tsed/schema";
 import { InGameService } from "../../services/IngameService";
 import { Exception } from "@tsed/exceptions";
+import { Unit } from "src/entities/Unit";
 
 @Controller("/ingame")
 export class InGameController {
@@ -51,6 +52,20 @@ export class InGameController {
         if (data.is_win) {
             this.ingameService.updateStagePerfaction(data.uuid, data.stage_index, data.chapter_index, data.perfaction);
             resultExp = data.use_energy;
+
+            const user = await this.ingameService.getUser(data.uuid);
+            user?.updateExp(resultExp);
+
+            const deck = await this.ingameService.getGameDeck(data.uuid, data.deck_index);
+            for (let i = 0; i < deck.unit_indexes.length; i++) {
+                const unitId = deck.unit_indexes[i];
+
+                if(unitId != -1){
+                    const unit = await this.ingameService.getUnit(unitId);
+                    unit?.updateExp(resultExp);
+                }
+            }
+
         } else {
             // TODO : add 90% energy as item
         }

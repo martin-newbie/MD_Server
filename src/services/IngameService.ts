@@ -4,6 +4,7 @@ import { Deck } from "../entities/Deck";
 import { DataSource, Repository } from "typeorm";
 import { UserRepository } from "../repositories/UserRepository";
 import { StagePerfaction } from "../entities/StagePerfaction";
+import { Unit } from "../entities/Unit";
 
 @Injectable()
 export class InGameService{
@@ -11,12 +12,14 @@ export class InGameService{
     datasource: DataSource;
 
     protected deckRepos: Repository<Deck>;
+    protected unitRepos: Repository<Unit>;
 
     @Inject()
     protected userRepository: UserRepository;
 
     $onInit(){
         this.deckRepos = this.datasource.getRepository(Deck);
+        this.unitRepos = this.datasource.getRepository(Unit);
     }
 
     async getGameDeck(uuid: string, idx: number){
@@ -31,6 +34,10 @@ export class InGameService{
 
     async getUser(uuid: string) {
         return await this.userRepository.findUserByUUID(uuid);
+    }
+
+    async getUnit(id: number){
+        return await this.unitRepos.findOne({where: {id: id}});
     }
 
     async updateStagePerfaction(uuid: string, stage_index: number, chapter_index: number, perfaction: boolean[]) {
