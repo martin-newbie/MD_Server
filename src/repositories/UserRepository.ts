@@ -15,7 +15,7 @@ export class UserRepository {
     }
 
     findUserByUUID(uuid: string) {
-        return this.repository.find({ where: { uuid: uuid } });
+        return this.repository.findOne({ where: { uuid: uuid } });
     }
 
     findUserByNickname(nickname: string) {
