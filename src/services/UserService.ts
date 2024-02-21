@@ -49,6 +49,8 @@ export class UserService{
             userData.dia = 1200;
             userData.level = 0;
             userData.exp = 0;
+            userData.energy = 100;
+            userData.last_energy_updated = new Date();
 
             userData.addUnit(new Unit(0));
             userData.addUnit(new Unit(1));
