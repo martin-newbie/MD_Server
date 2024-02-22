@@ -3,7 +3,6 @@ import { BodyParams } from "@tsed/platform-params";
 import { Post } from "@tsed/schema";
 import { InGameService } from "../../services/IngameService";
 import { Exception } from "@tsed/exceptions";
-import { Unit } from "src/entities/Unit";
 
 @Controller("/ingame")
 export class InGameController {

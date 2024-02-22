@@ -7,6 +7,7 @@ import { UnitRepository } from "../repositories/UnitRepository";
 import { DataSource } from "typeorm";
 import { MYSQL_DATASOURCE } from "../datasources/MysqlDatasource";
 import { Deck } from "../entities/Deck";
+import { Exception } from "@tsed/exceptions";
 
 @Injectable()
 export class UserService{
@@ -63,5 +64,14 @@ export class UserService{
             console.log("create new user");
             return userData;
         }
+    }
+
+    async findUserWithUUID(uuid: string) {
+        const user = await this.userRepository.findUserByUUID(uuid);
+        if (user == null || user == undefined) {
+            throw Exception;
+        }
+
+        return user;
     }
 }
