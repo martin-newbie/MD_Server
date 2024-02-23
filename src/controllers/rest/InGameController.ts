@@ -23,7 +23,10 @@ export class InGameController {
         const energy = user.getEnergy();
 
         if(energy < usedEnergy){
-            throw Exception;
+            throw {
+                "is_error": true,
+                "error_message": "Not enough energy.",
+            }
         }
 
         user.updateEnergy(-usedEnergy);
@@ -47,7 +50,10 @@ export class InGameController {
         const user = await this.inGameService.getUser(data.uuid);
 
         if(user === null) {
-            throw Exception;
+            throw {
+                "is_error": true,
+                "error_message": "User not found.",
+            }
         }
 
         let resultExp = 0;

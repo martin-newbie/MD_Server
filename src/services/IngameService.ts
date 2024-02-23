@@ -29,7 +29,14 @@ export class InGameService{
             where: {user_uuid: uuid},
         });
         
-        const deck = decks.find(item => item.deck_index === idx) as Deck;
+        const deck = decks.find(item => item.deck_index === idx);
+        if(deck === undefined) {
+            throw {
+                "is_error": true,
+                "error_message": "Deck not found.",
+            }
+        }
+
         deck.unit_indexes = [deck.unit1, deck.unit2, deck.unit3, deck.unit4, deck.unit5];
         return deck;
     }
@@ -37,7 +44,10 @@ export class InGameService{
     async getUser(uuid: string) {
         const user = await this.userRepository.findUserByUUID(uuid);
         if(user === null) {
-            throw Exception;
+            throw {
+                "is_error": true,
+                "error_message": "User not found.",
+            }
         }
         return user;
     }
@@ -53,7 +63,10 @@ export class InGameService{
     async getUnit(id: number){
         const unit = await this.unitRepos.findOne({where: {id: id}});
         if(unit === null) {
-            throw Exception;
+            throw {
+                "is_error": true,
+                "error_message": "Unit not found.",
+            }
         }
         return unit;
     }
