@@ -38,27 +38,7 @@ export class InGameController {
             "selected_chapter": data.selected_chapter,
         };
     }
-
-    @Post("/stage-game-enter")
-    async stageGameEnter(@BodyParams("input_data") data: any) {
-
-
-        const deck = await this.inGameService.getGameDeck(data.uuid, data.index);
-        const user = await this.inGameService.getUser(data.uuid);
-
-        if (user === null || user.getEnergy() < data.use_energy) {
-            return {
-                "is_error": true,
-            };
-        }
-
-        user.updateEnergy(-data.use_energy);
-
-        return {
-            "deck": deck,
-        }
-    }
-
+    
     @Post("/game-end")
     async gameEnd(@BodyParams("input_data") data: any) {
 
