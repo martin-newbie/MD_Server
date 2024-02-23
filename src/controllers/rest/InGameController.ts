@@ -17,7 +17,7 @@ export class InGameController {
     @Post("/game-enter")
     async gameEnter(@BodyParams("input_data") string_data: string) {
 
-        const data = JSON.parse(string_data);
+        const data: RecieveGameEnter = JSON.parse(string_data);
         const user = await this.userService.findUserWithUUID(data.uuid);
         const usedEnergy = data.energy_use;
         const energy = user.getEnergy();
@@ -43,7 +43,7 @@ export class InGameController {
     @Post("/game-end")
     async gameEnd(@BodyParams("input_data") string_data: string) {
 
-        const data = JSON.parse(string_data);
+        const data: RecieveGameEnd = JSON.parse(string_data);
         const user = await this.inGameService.getUser(data.uuid);
 
         if(user === null) {
@@ -81,4 +81,22 @@ export class InGameController {
         }
 
     }
+}
+
+export class RecieveGameEnter{
+    uuid: string;
+    deck_index: number;
+    selected_stage: number;
+    selected_chapter: number;
+    energy_use: number;
+}
+
+export class RecieveGameEnd{
+    uuid: string;
+    stage_index: number;
+    chapter_index: number;
+    is_win: boolean;
+    perfaction: boolean[];
+    use_energy: number;
+    deck_index: number;
 }
