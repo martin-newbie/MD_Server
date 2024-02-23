@@ -2,7 +2,6 @@ import { Controller, Inject } from "@tsed/di";
 import { BodyParams } from "@tsed/platform-params";
 import { Post } from "@tsed/schema";
 import { UserService } from "../../services/UserService";
-import { Exception } from "@tsed/exceptions";
 import { InGameService } from "../../services/IngameService";
 
 

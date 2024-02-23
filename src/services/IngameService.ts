@@ -6,7 +6,7 @@ import { UserRepository } from "../repositories/UserRepository";
 import { StagePerfaction } from "../entities/StagePerfaction";
 import { Unit } from "../entities/Unit";
 import { Exception } from "@tsed/exceptions";
-import { User } from "src/entities/User";
+import { User } from "../entities/User";
 
 @Injectable()
 export class InGameService{
