@@ -95,6 +95,9 @@ export class User {
 
     getEnergy(): number {
         const now = new Date();
+        if(this.last_energy_updated == null || this.last_energy_updated === undefined){
+            this.last_energy_updated = now;
+        }
 
         if (this.energy < this.maxEnergy()) {
             const chargedEnergy = ((now.getTime() - this.last_energy_updated.getTime()) * 1000) % (60 * 6);
