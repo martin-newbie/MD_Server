@@ -21,7 +21,7 @@ export class TestMenuController{
     }
 
     @Post("/into-stage")
-    async tryIntoStage(@BodyParams("input_data") data: any){
+    async tryIntoStage(@BodyParams("input_data") data: string){
         return null;
     }
 
