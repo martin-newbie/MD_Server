@@ -23,24 +23,6 @@ export class TestMenuController{
 
     @Post("/into-stage")
     async tryIntoStage(@BodyParams("input_data") data: any){
-        const user = await this.userService.findUserWithUUID(data.uuid);
-        const usedEnergy = data.energy_use;
-        const energy = user.getEnergy();
-
-        if(energy < usedEnergy){
-            throw Exception;
-        }
-
-        user.updateEnergy(-usedEnergy);
-        const deck = this.inGameService.getGameDeck(data.uuid, data.deck_index);
-
-        return{
-            "success": true,
-            "current_energy": user.getEnergy(),
-            "energy_updated_at": user.last_energy_updated,
-            "deck": deck,
-            "stage_data": "",
-        };
     }
 
     @Post("/into-story")

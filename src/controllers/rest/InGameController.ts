@@ -1,3 +1,4 @@
+import { UserService } from './../../services/UserService';
 import { Controller, Inject } from "@tsed/di";
 import { BodyParams } from "@tsed/platform-params";
 import { Post } from "@tsed/schema";
@@ -8,30 +9,50 @@ import { Exception } from "@tsed/exceptions";
 export class InGameController {
 
     @Inject()
-    protected ingameService: InGameService;
+    protected inGameService: InGameService;
+
+    @Inject()
+    protected userService: UserService;
 
     @Post("/game-enter")
-    async gameEnter(@BodyParams("input_data") input_data: string) {
-        const data: StageEnterData = JSON.parse(input_data);
-        var deck = await this.ingameService.getGameDeck(data.uuid, data.index);
-        return deck;
+    async gameEnter(@BodyParams("input_data") data: any) {
+
+        const user = await this.userService.findUserWithUUID(data.uuid);
+        const usedEnergy = data.energy_use;
+        const energy = user.getEnergy();
+
+        if(energy < usedEnergy){
+            throw Exception;
+        }
+
+        user.updateEnergy(-usedEnergy);
+        const deck = await this.inGameService.getGameDeck(data.uuid, data.deck_index);
+
+        return{
+            "success": true,
+            "current_energy": user.getEnergy(),
+            "energy_updated_at": user.last_energy_updated,
+            "deck": deck,
+            "stage_data": "",
+            "selected_stage": data.selected_stage,
+            "selected_chapter": data.selected_chapter,
+        };
     }
 
     @Post("/stage-game-enter")
-    async stageGameEnter(@BodyParams("input_data") input_data: any) {
+    async stageGameEnter(@BodyParams("input_data") data: any) {
 
-        const stageData: StageEnterData = input_data;
 
-        const deck = await this.ingameService.getGameDeck(stageData.uuid, stageData.index);
-        const user = await this.ingameService.getUser(stageData.uuid);
+        const deck = await this.inGameService.getGameDeck(data.uuid, data.index);
+        const user = await this.inGameService.getUser(data.uuid);
 
-        if (user === null || user.getEnergy() < stageData.use_energy) {
+        if (user === null || user.getEnergy() < data.use_energy) {
             return {
                 "is_error": true,
             };
         }
 
-        user.updateEnergy(-stageData.use_energy);
+        user.updateEnergy(-data.use_energy);
 
         return {
             "deck": deck,
@@ -41,7 +62,7 @@ export class InGameController {
     @Post("/game-end")
     async gameEnd(@BodyParams("input_data") data: any) {
 
-        const user = await this.ingameService.getUser(data.uuid);
+        const user = await this.inGameService.getUser(data.uuid);
 
         if(user === null) {
             throw Exception;
@@ -49,21 +70,21 @@ export class InGameController {
 
         let resultExp = 0;
         if (data.is_win) {
-            this.ingameService.updateStagePerfaction(data.uuid, data.stage_index, data.chapter_index, data.perfaction);
+            this.inGameService.updateStagePerfaction(data.uuid, data.stage_index, data.chapter_index, data.perfaction);
             resultExp = data.use_energy;
 
-            const user = await this.ingameService.getUser(data.uuid);
+            const user = await this.inGameService.getUser(data.uuid);
             user.updateExp(resultExp);
-            this.ingameService.saveUser(user);
+            this.inGameService.saveUser(user);
 
-            const deck = await this.ingameService.getGameDeck(data.uuid, data.deck_index);
+            const deck = await this.inGameService.getGameDeck(data.uuid, data.deck_index);
             for (let i = 0; i < deck.unit_indexes.length; i++) {
                 const unitId = deck.unit_indexes[i];
 
                 if(unitId != -1){
-                    const unit = await this.ingameService.getUnit(unitId);
+                    const unit = await this.inGameService.getUnit(unitId);
                     unit.updateExp(resultExp);
-                    this.ingameService.saveUnit(unit);
+                    this.inGameService.saveUnit(unit);
                 }
             }
 
@@ -78,10 +99,4 @@ export class InGameController {
         }
 
     }
-}
-
-export class StageEnterData {
-    uuid: string;
-    index: number;
-    use_energy: number;
 }
