@@ -25,11 +25,11 @@ export class UserRepository {
         });
     }
 
-    saveUser(userData: User) {
-        return this.repository.save(userData);
+    isUserExists(nickname: string) {
+        return this.repository.exists({ where: { nickname: nickname } });
     }
 
-    isUserNicknameExist(nickname: string) {
-        return this.repository.exists({ where: { nickname: nickname } });
+    saveUser(userData: User) {
+        return this.repository.save(userData);
     }
 }

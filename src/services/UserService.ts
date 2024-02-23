@@ -24,18 +24,13 @@ export class UserService{
         this.unitRepository = this.datasource.getRepository(Unit);
     }
 
-    async testLoginWithNickname(nickname: string){
-        if(nickname === null){
-            return {
-                "code": 400, 
-                "message": "nickname is required"
-            };
-        }
+    async testLoginWithNickname(nickname: string) {
 
-        const exist = await this.userRepository.isUserNicknameExist(nickname);
+        const exist = await this.userRepository.isUserExists(nickname);
+        
         if (exist) {
             // login
-            const userData = await this.userRepository.findUserByNickname(nickname);
+            let userData = await this.userRepository.findUserByNickname(nickname);
             console.log("find existing user");
             userData?.units.forEach(unit => {
                 unit.skill_level = [unit.skill_level_0, unit.skill_level_1, unit.skill_level_2, unit.skill_level_3];
