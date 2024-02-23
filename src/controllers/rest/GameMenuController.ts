@@ -22,6 +22,7 @@ export class TestMenuController{
 
     @Post("/into-stage")
     async tryIntoStage(@BodyParams("input_data") data: any){
+        return null;
     }
 
     @Post("/into-story")
