@@ -15,8 +15,9 @@ export class InGameController {
     protected userService: UserService;
 
     @Post("/game-enter")
-    async gameEnter(@BodyParams("input_data") data: any) {
+    async gameEnter(@BodyParams("input_data") string_data: string) {
 
+        const data = JSON.parse(string_data);
         const user = await this.userService.findUserWithUUID(data.uuid);
         const usedEnergy = data.energy_use;
         const energy = user.getEnergy();
@@ -40,8 +41,9 @@ export class InGameController {
     }
     
     @Post("/game-end")
-    async gameEnd(@BodyParams("input_data") data: any) {
+    async gameEnd(@BodyParams("input_data") string_data: any) {
 
+        const data = JSON.parse(string_data);
         const user = await this.inGameService.getUser(data.uuid);
 
         if(user === null) {
