@@ -41,7 +41,7 @@ export class InGameController {
     }
     
     @Post("/game-end")
-    async gameEnd(@BodyParams("input_data") string_data: any) {
+    async gameEnd(@BodyParams("input_data") string_data: string) {
 
         const data = JSON.parse(string_data);
         const user = await this.inGameService.getUser(data.uuid);
