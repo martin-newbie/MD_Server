@@ -31,10 +31,12 @@ export class InGameController {
 
         user.updateEnergy(-usedEnergy);
         const deck = await this.inGameService.getGameDeck(data.uuid, data.deck_index);
+        const resultEnergy = user.getEnergy();
+        await this.inGameService.saveUser(user);
 
         return{
             "success": true,
-            "current_energy": user.getEnergy(),
+            "current_energy": resultEnergy,
             "energy_updated_at": user.last_energy_updated,
             "deck": deck,
             "stage_data": "",
