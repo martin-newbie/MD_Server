@@ -30,7 +30,7 @@ export class UserService{
         
         if (exist) {
             // login
-            let userData = await this.userRepository.findUserByNickname(nickname);
+            let userData = await this.userRepository.findUserByNicknameWithAllRelation(nickname);
             console.log("find existing user");
             userData?.units.forEach(unit => {
                 unit.skill_level = [unit.skill_level_0, unit.skill_level_1, unit.skill_level_2, unit.skill_level_3];

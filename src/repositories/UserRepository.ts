@@ -2,6 +2,7 @@ import { Inject, Injectable } from "@tsed/di";
 import { MYSQL_DATASOURCE } from "../datasources/MysqlDatasource";
 import { User } from "../entities/User";
 import { DataSource, Repository } from "typeorm";
+import { Exception } from "@tsed/exceptions";
 
 @Injectable()
 export class UserRepository {
@@ -18,7 +19,34 @@ export class UserRepository {
         return this.repository.findOne({ where: { uuid: uuid } });
     }
 
-    findUserByNickname(nickname: string) {
+    async findUserByUUIDWithUnitRelation(uuid: string): Promise<User>{
+        const user = await this.repository.findOne({
+            where: { uuid: uuid },
+            relations: ['units'],
+        });
+
+
+        if(user === null || user === undefined){
+            throw Exception;
+        }
+
+        return user;
+    }
+
+    async findUserByUUIDWithDeckRelation(uuid: string): Promise<User>{
+        const user = await this.repository.findOne({
+            where: { uuid: uuid },
+            relations: ['decks'],
+        });
+
+        if(user === null || user === undefined){
+            throw Exception;
+        }
+
+        return user;
+    }
+
+    findUserByNicknameWithAllRelation(nickname: string) {
         return this.repository.findOne({
             where: { nickname: nickname },
             relations: ['units', 'decks', 'stage_perfactions'],
