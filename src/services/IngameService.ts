@@ -1,33 +1,21 @@
 import { Inject, Injectable } from "@tsed/di";
 import { MYSQL_DATASOURCE } from "../datasources/MysqlDatasource";
-import { Deck } from "../entities/Deck";
-import { DataSource, Repository } from "typeorm";
+import { DataSource } from "typeorm";
 import { UserRepository } from "../repositories/UserRepository";
 import { StagePerfaction } from "../entities/StagePerfaction";
-import { Unit } from "../entities/Unit";
-import { Exception } from "@tsed/exceptions";
 import { User } from "../entities/User";
 
 @Injectable()
 export class InGameService{
+
     @Inject(MYSQL_DATASOURCE)
     datasource: DataSource;
 
-    protected deckRepos: Repository<Deck>;
-    protected unitRepos: Repository<Unit>;
-
     @Inject()
-    protected userRepository: UserRepository;
-
-    $onInit(){
-        this.deckRepos = this.datasource.getRepository(Deck);
-        this.unitRepos = this.datasource.getRepository(Unit);
-    }
+    protected userRepos: UserRepository;
 
     async getGameDeck(uuid: string, idx: number){
-        const decks = await this.deckRepos.find({
-            where: {user_uuid: uuid},
-        });
+        const decks = await this.userRepos.findUserByUUIDWithDeckRelation(uuid);
         
         const deck = decks.find(item => item.deck_index === idx);
         if(deck === undefined) {
@@ -42,7 +30,7 @@ export class InGameService{
     }
 
     async getUser(uuid: string) {
-        const user = await this.userRepository.findUserByUUID(uuid);
+        const user = await this.userRepos.findUserByUUID(uuid);
         if(user === null) {
             throw {
                 "is_error": true,
@@ -53,26 +41,11 @@ export class InGameService{
     }
 
     async saveUser(user: User) {
-        await this.userRepository.saveUser(user);
-    }
-
-    async saveUnit(unit: Unit) {
-        await this.unitRepos.save(unit);
-    }
-
-    async getUnit(id: number){
-        const unit = await this.unitRepos.findOne({where: {id: id}});
-        if(unit === null) {
-            throw {
-                "is_error": true,
-                "error_message": "Unit not found.",
-            }
-        }
-        return unit;
+        await this.userRepos.saveUser(user);
     }
 
     async updateStagePerfaction(uuid: string, stage_index: number, chapter_index: number, perfaction: boolean[]) {
-        const user = await this.userRepository.findUserByUUID(uuid);
+        const user = await this.userRepos.findUserByUUID(uuid);
         if(user === null) {
             return;
         }

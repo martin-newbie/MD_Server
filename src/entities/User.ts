@@ -60,11 +60,6 @@ export class User {
     @JoinColumn({name: 'uuid', referencedColumnName: 'user_uuid'})
     stage_perfactions: StagePerfaction[];
 
-    updateExp(extra: number) {
-        // TODO: add exp table and add level up
-        this.exp += extra;
-    }
-
     addUnit(unit: Unit) {
         if (this.units == null) {
             this.units = [];
@@ -90,38 +85,6 @@ export class User {
 
         this.stage_perfactions.push(stagePerfaction);
         stagePerfaction.user = this;
-    }
-
-
-    getEnergy(): number {
-        const now = new Date();
-        if(this.last_energy_updated == null || this.last_energy_updated === undefined){
-            this.last_energy_updated = now;
-        }
-
-        if (this.energy < this.maxEnergy()) {
-            const chargedEnergy = ((now.getTime() - this.last_energy_updated.getTime()) * 1000) % (60 * 6);
-            this.energy += chargedEnergy;
-
-            if (this.energy > this.maxEnergy()) {
-                this.energy = this.maxEnergy();
-            }
-        }
-
-        this.last_energy_updated = now;
-        return this.energy;
-    }
-
-    updateEnergy(extra: number) {
-        this.getEnergy();
-
-        if (extra + this.energy < 0) {
-            // error
-            throw Exception;
-        }
-
-        this.energy += extra;
-        this.last_energy_updated = new Date();
     }
 
     maxEnergy() {

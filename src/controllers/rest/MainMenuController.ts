@@ -24,7 +24,7 @@ export class MainMenuController{
     async enterListFromMenu(@BodyParams("input_data") string_data: string){
         const data: RecieveUserData = JSON.parse(string_data);
 
-        const units = (await this.userRepos.findUserByUUIDWithUnitRelation(data.uuid)).units;
+        const units = await this.userRepos.findUserByUUIDWithUnitRelation(data.uuid);
         return units;
     }
 
@@ -32,7 +32,7 @@ export class MainMenuController{
     async enterLoadoutFromMenu(@BodyParams("input_data") string_data: string){
         const data: RecieveUserData = JSON.parse(string_data);
 
-        const decks = (await this.userRepos.findUserByUUIDWithDeckRelation(data.uuid)).decks;
+        const decks = await this.userRepos.findUserByUUIDWithDeckRelation(data.uuid);
         return decks;
     }
 }

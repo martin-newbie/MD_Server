@@ -4,33 +4,22 @@ import { User } from "../entities/User";
 import { Unit } from "../entities/Unit";
 import { UserRepository } from "../repositories/UserRepository";
 import { UnitRepository } from "../repositories/UnitRepository";
-import { DataSource } from "typeorm";
-import { MYSQL_DATASOURCE } from "../datasources/MysqlDatasource";
 import { Deck } from "../entities/Deck";
 import { Exception } from "@tsed/exceptions";
 
 @Injectable()
 export class UserService{
 
-    @Inject(MYSQL_DATASOURCE)
-    datasource: DataSource;
-
     @Inject()
-    protected userRepository: UserRepository;
-
-    protected unitRepository: UnitRepository;
-
-    $onInit(){
-        this.unitRepository = this.datasource.getRepository(Unit);
-    }
+    protected userRepos: UserRepository;
 
     async testLoginWithNickname(nickname: string) {
 
-        const exist = await this.userRepository.isUserExists(nickname);
+        const exist = await this.userRepos.isUserExists(nickname);
         
         if (exist) {
             // login
-            let userData = await this.userRepository.findUserByNicknameWithAllRelation(nickname);
+            let userData = await this.userRepos.findUserByNicknameWithAllRelation(nickname);
             console.log("find existing user");
             userData?.units.forEach(unit => {
                 unit.skill_level = [unit.skill_level_0, unit.skill_level_1, unit.skill_level_2, unit.skill_level_3];
@@ -55,18 +44,24 @@ export class UserService{
             userData.addUnit(new Unit(12));
             userData.addDeck(new Deck(0));
             
-            await this.userRepository.saveUser(userData);
+            await this.userRepos.saveUser(userData);
             console.log("create new user");
             return userData;
         }
     }
 
     async findUserWithUUID(uuid: string) {
-        const user = await this.userRepository.findUserByUUID(uuid);
+        const user = await this.userRepos.findUserByUUID(uuid);
         if (user == null || user == undefined) {
             throw Exception;
         }
 
         return user;
+    }
+
+    async findUserDeck(uuid: string, deck_index: number){
+        const decks = await this.userRepos.findUserByUUIDWithDeckRelation(uuid);
+        const deck = decks[deck_index];
+        return deck;
     }
 }
