@@ -4,6 +4,7 @@ import { DataSource } from "typeorm";
 import { UserRepository } from "../repositories/UserRepository";
 import { StagePerfaction } from "../entities/StagePerfaction";
 import { User } from "../entities/User";
+import { Exception } from "@tsed/exceptions";
 
 @Injectable()
 export class InGameService{
@@ -15,7 +16,8 @@ export class InGameService{
     protected userRepos: UserRepository;
 
     async getGameDeck(uuid: string, idx: number){
-        const decks = await this.userRepos.findUserDecks(uuid);
+        const decks = (await this.userRepos.findUserDecks(uuid))?.decks;
+        if(decks === null || decks === undefined) throw Exception;
         
         const deck = decks.find(item => item.deck_index === idx);
         if(deck === undefined) {

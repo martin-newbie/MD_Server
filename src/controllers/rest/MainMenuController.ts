@@ -18,7 +18,7 @@ export class MainMenuController{
     async enterListFromMenu(@BodyParams("input_data") string_data: string){
         const data: RecieveUserData = JSON.parse(string_data);
 
-        const units = await this.userRepos.findUserUnits(data.uuid);
+        const units = (await this.userRepos.findUserUnits(data.uuid))?.units;
         return units;
     }
 
@@ -26,7 +26,7 @@ export class MainMenuController{
     async enterLoadoutFromMenu(@BodyParams("input_data") string_data: string){
         const data: RecieveUserData = JSON.parse(string_data);
 
-        const decks = await this.userRepos.findUserDecks(data.uuid);
+        const decks = (await this.userRepos.findUserDecks(data.uuid))?.decks;
         return decks;
     }
 }
