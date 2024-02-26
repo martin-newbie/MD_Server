@@ -3,7 +3,6 @@ import { randomUUID } from "crypto";
 import { User } from "../entities/User";
 import { Unit } from "../entities/Unit";
 import { UserRepository } from "../repositories/UserRepository";
-import { UnitRepository } from "../repositories/UnitRepository";
 import { Deck } from "../entities/Deck";
 import { Exception } from "@tsed/exceptions";
 

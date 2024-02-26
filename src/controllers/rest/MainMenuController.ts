@@ -2,18 +2,12 @@ import { Controller, Inject } from "@tsed/di";
 import { BodyParams } from "@tsed/platform-params";
 import { Post } from "@tsed/schema";
 import { UserRepository } from "../../repositories/UserRepository";
-import { UnitRepository } from "../../repositories/UnitRepository";
-
-
 
 @Controller("/main-menu")
 export class MainMenuController{
 
     @Inject()
     userRepos: UserRepository;
-
-    @Inject()
-    unitRepos: UnitRepository;
 
     @Post("/enter-main")
     async enterMain(@BodyParams("input_data") data: string){
