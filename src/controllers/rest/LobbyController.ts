@@ -2,19 +2,15 @@ import { Controller, Inject } from "@tsed/di";
 import { BodyParams } from "@tsed/platform-params";
 import { Post } from "@tsed/schema";
 import { UserService } from "../../services/UserService";
-import { InGameService } from "../../services/IngameService";
 
 
 
 @Controller("/game-menu")
-export class TestMenuController{
+export class LobbyController{
 
     @Inject()
     protected userService: UserService;
     
-    @Inject()
-    protected inGameService: InGameService;
-
     @Post("/menu-enter")
     async menuEnter(@BodyParams("input_data") input_data: string){
         return null;
