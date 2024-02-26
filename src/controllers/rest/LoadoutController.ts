@@ -9,14 +9,6 @@ export class LoadoutController {
     @Inject()
     protected loadoutService: LoadoutService;
 
-    @Post("/deck-enter")
-    async deck(@BodyParams("input_data") uuid: string) {
-        const decks = await this.loadoutService.getDecks(uuid);
-        return {
-            "decks": decks,
-        }
-    }
-
     @Post("/deck-save")
     async updateDeckAt(@BodyParams("input_data") input_data: string) {
         const deck: Deck = JSON.parse(input_data);

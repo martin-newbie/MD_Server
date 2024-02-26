@@ -19,7 +19,9 @@ export class MainMenuController{
         const data: RecieveUserData = JSON.parse(string_data);
 
         const units = (await this.userRepos.findUserUnits(data.uuid))?.units;
-        return units;
+        return {
+            "units": units,
+        }
     }
 
     @Post("/enter-loadout")
@@ -27,7 +29,9 @@ export class MainMenuController{
         const data: RecieveUserData = JSON.parse(string_data);
 
         const decks = (await this.userRepos.findUserDecks(data.uuid))?.decks;
-        return decks;
+        return {
+            "decks": decks,
+        }
     }
 }
 
