@@ -21,26 +21,6 @@ export class LobbyController{
         return null;
     }
 
-    @Post("/into-story")
-    async tryIntoStory(){
-
-    }
-
-    @Post("/into-raid")
-    async tryIntoRaid(){
-
-    }
-
-    @Post("/into-pvp")
-    async tryIntoPvp(){
-
-    }
-
-    @Post("/into-dungeon")
-    async tryIntoDungeon(){
-
-    }
-
 }
 
 export class MenuInput{
