@@ -15,7 +15,7 @@ export class InGameService{
     protected userRepos: UserRepository;
 
     async getGameDeck(uuid: string, idx: number){
-        const decks = await this.userRepos.findUserByUUIDWithDeckRelation(uuid);
+        const decks = await this.userRepos.findUserDecks(uuid);
         
         const deck = decks.find(item => item.deck_index === idx);
         if(deck === undefined) {

@@ -59,7 +59,7 @@ export class UserService{
     }
 
     async findUserDeck(uuid: string, deck_index: number){
-        const decks = await this.userRepos.findUserByUUIDWithDeckRelation(uuid);
+        const decks = await this.userRepos.findUserDecks(uuid);
         const deck = decks[deck_index];
         return deck;
     }
