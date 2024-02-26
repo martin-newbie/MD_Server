@@ -33,20 +33,13 @@ export class InGameController {
     async gameEnd(@BodyParams("input_data") string_data: string) {
 
         const data: RecieveGameEnd = JSON.parse(string_data);
-        const user = await this.inGameService.getUser(data.uuid);
-        const deck = await this.inGameService.getGameDeck(data.uuid, data.deck_index);
+        const user = await this.userService.findUserWithUUID(data.uuid);
+        const deck = await this.userService.findUserDeck(data.uuid, data.deck_index);
 
         if (data.is_win) {
-            this.inGameService.updateStagePerfaction(data.uuid, data.stage_index, data.chapter_index, data.perfaction);
-
-            this.inGameService.saveUser(user);
-
-            for (let i = 0; i < deck.unit_indexes.length; i++) {
-                const unitId = deck.unit_indexes[i];
-            }
 
         } else {
-            // TODO : add 90% energy as item
+            
         }
 
 
