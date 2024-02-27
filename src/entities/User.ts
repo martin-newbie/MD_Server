@@ -92,6 +92,15 @@ export class User {
         stagePerfaction.user = this;
     }
 
+    addItem(item: Item){
+        if(this.items == null){
+            this.items = [];
+        }
+
+        this.items.push(item);
+        item.user = this;
+    }
+
     maxEnergy() {
         return 100 + this.level * 2;
     }
