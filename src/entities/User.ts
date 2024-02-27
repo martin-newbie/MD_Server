@@ -97,8 +97,13 @@ export class User {
             this.items = [];
         }
 
-        this.items.push(item);
-        item.user = this;
+        const findItem = this.items.find(item => item.idx === item.idx);
+        if (findItem !== null && findItem !== undefined) {
+            findItem.count += item.count;
+        } else {
+            this.items.push(item);
+            item.user = this;
+        }
     }
 
     maxEnergy() {
