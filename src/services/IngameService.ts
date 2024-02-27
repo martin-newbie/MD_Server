@@ -1,6 +1,4 @@
 import { Inject, Injectable } from "@tsed/di";
-import { MYSQL_DATASOURCE } from "../datasources/MysqlDatasource";
-import { DataSource } from "typeorm";
 import { UserRepository } from "../repositories/UserRepository";
 import * as fs from 'fs';
 
