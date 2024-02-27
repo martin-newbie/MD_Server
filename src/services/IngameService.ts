@@ -8,7 +8,7 @@ export class InGameService{
     @Inject()
     protected userRepos: UserRepository;
     
-    findStageData(stage: number, chapter: number){
+    findStageData(stage: number, chapter: number) {
         const path = `./src/data/stage/${chapter}.json`;
         const data = fs.readFileSync(path, 'utf8');
         const chapterData: chapterData = JSON.parse(data);

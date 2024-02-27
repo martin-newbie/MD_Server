@@ -25,8 +25,6 @@ export class InGameController {
             "success": true,
             "deck": deck,
             "stage_data": stageData,
-            "selected_stage": data.selected_stage,
-            "selected_chapter": data.selected_chapter,
         };
     }
 
