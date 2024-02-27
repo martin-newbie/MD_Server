@@ -1,6 +1,5 @@
 import { Inject, Injectable } from "@tsed/di";
 import { User } from "../entities/User";
-import { Exception } from "@tsed/exceptions";
 import { DataSource, Repository } from "typeorm";
 import { MYSQL_DATASOURCE } from "../datasources/MysqlDatasource";
 
