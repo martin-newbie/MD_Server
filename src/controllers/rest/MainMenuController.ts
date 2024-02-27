@@ -20,6 +20,12 @@ export class MainMenuController{
         const data: RecieveUserData = JSON.parse(string_data);
 
         const units = (await this.userRepos.findUserUnits(data.uuid))?.units;
+        if(units == null || units== undefined) throw Exception;
+
+        units.forEach(unit => {
+            unit.initSkillLevel();
+        });
+        
         return {
             "units": units,
         }
@@ -33,7 +39,7 @@ export class MainMenuController{
         if(decks == null || decks== undefined) throw Exception;
 
         decks.forEach(deck => {
-            deck.unit_indexes = [deck.unit1, deck.unit2, deck.unit3, deck.unit4, deck.unit5];
+            deck.initUnitId();
         });
 
         return {

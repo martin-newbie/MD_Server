@@ -46,4 +46,9 @@ export class Deck {
     @ManyToOne(() => User, user => user.decks, {})
     @JoinColumn({ name: "user_uuid", referencedColumnName: "uuid" })
     user: User;
+
+    initUnitId(){
+        this.unit_indexes = [this.unit1, this.unit2, this.unit3, this.unit4, this.unit5];
+        return this;
+    }
 }

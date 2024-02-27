@@ -58,4 +58,9 @@ export class Unit {
         // TODO : add exp table and add level up
         this.exp += extra;
     }
+
+    initSkillLevel(){
+        this.skill_level = [this.skill_level_0, this.skill_level_1, this.skill_level_2, this.skill_level_3];
+        return this;
+    }
 }

@@ -46,11 +46,4 @@ export class UserRepository {
             relations: ['decks'],
         });
     }
-
-    findUserStagePerfactions(uuid: string) {
-        return this.repository.findOne({
-            where: { uuid: uuid },
-            relations: ['stage_perfactions'],
-        });
-    }
 }

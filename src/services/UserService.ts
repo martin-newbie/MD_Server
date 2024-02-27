@@ -62,7 +62,7 @@ export class UserService{
         const decks = (await this.userRepos.findUserDecks(uuid))?.decks;
         if(decks === null || decks === undefined) throw Exception;
 
-        const deck = decks[deck_index];
+        const deck = decks[deck_index].initUnitId();
         return deck;
     }
 }
