@@ -6,9 +6,8 @@ import { User } from "./User";
 @Entity({ name: 'item' })
 export class Item{
 
-    constructor(_idx: number, _count: number = 0) {
+    constructor(_idx: number) {
         this.idx = _idx;
-        this.count = _count;
     }
 
     // for server
