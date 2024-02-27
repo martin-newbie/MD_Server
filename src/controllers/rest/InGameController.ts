@@ -1,6 +1,6 @@
 import { UserService } from './../../services/UserService';
 import { Controller, Inject } from "@tsed/di";
-import { BodyParams } from "@tsed/platform-params";
+import { BodyParams, QueryParams } from "@tsed/platform-params";
 import { Post } from "@tsed/schema";
 import { InGameService } from "../../services/IngameService";
 
@@ -19,14 +19,21 @@ export class InGameController {
 
         const data: RecieveGameEnter = JSON.parse(string_data);
         const deck = await this.userService.findUserDeck(data.uuid, data.deck_index);
+        const stageData = this.inGameService.findStageData(data.selected_stage, data.selected_chapter);
 
         return{
             "success": true,
             "deck": deck,
-            "stage_data": "",
+            "stage_data": stageData,
             "selected_stage": data.selected_stage,
             "selected_chapter": data.selected_chapter,
         };
+    }
+
+    @Post("/test-stage")
+    async testStage(@QueryParams("stage") stage: number, @QueryParams("chapter") chapter: number) {
+        const stageData = this.inGameService.findStageData(stage, chapter);
+        return stageData;
     }
     
     @Post("/game-end")
