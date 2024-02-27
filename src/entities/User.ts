@@ -2,8 +2,8 @@ import { CollectionOf, Property, Required } from "@tsed/schema";
 import { Column, Entity, JoinColumn, OneToMany, PrimaryColumn, PrimaryGeneratedColumn, Unique } from "typeorm";
 import { Unit } from "./Unit";
 import { Deck } from "./Deck";
-import { Exception } from "@tsed/exceptions";
 import { StagePerfaction } from "./StagePerfaction";
+import { Item } from "./Item";
 
 @Entity({ name: 'user' })
 @Unique('user_uuid', ['uuid'])
@@ -59,6 +59,11 @@ export class User {
     @OneToMany(type=> StagePerfaction, (stagePerfaction) => stagePerfaction.user, {cascade: ['insert']})
     @JoinColumn({name: 'uuid', referencedColumnName: 'user_uuid'})
     stage_perfactions: StagePerfaction[];
+
+    @CollectionOf(Item)
+    @OneToMany(type => Item, (item) => item.user, { cascade: ['insert'] })
+    @JoinColumn({ name: 'uuid', referencedColumnName: 'user_uuid' })
+    items: Item[];
 
     addUnit(unit: Unit) {
         if (this.units == null) {
