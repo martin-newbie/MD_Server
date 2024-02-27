@@ -38,6 +38,13 @@ export class UserController{
         item.count = data.count;
         user.addItem(item);
     }
+
+    @Post("/use-item")
+    async useItem(@BodyParams("input_data") string_data: string){
+        const data: RecieveGetItem = JSON.parse(string_data);
+
+        const user = await this.userService.findUserWithUUID(data.uuid);
+    }
 }
 
 export class RecieveGetItem{

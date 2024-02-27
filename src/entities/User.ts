@@ -4,6 +4,7 @@ import { Unit } from "./Unit";
 import { Deck } from "./Deck";
 import { StagePerfaction } from "./StagePerfaction";
 import { Item } from "./Item";
+import { Exception } from "@tsed/exceptions";
 
 @Entity({ name: 'user' })
 @Unique('user_uuid', ['uuid'])
@@ -103,6 +104,30 @@ export class User {
         } else {
             this.items.push(item);
             item.user = this;
+        }
+    }
+
+    useItem(item: Item){
+        
+        if(this.items == null){
+            this.items = [];
+            throw Exception;
+        }
+
+        const findItem = this.items.find(i => i.idx === item.idx);
+
+        if(findItem === null || findItem === undefined){
+            throw Exception;
+        }
+        if(findItem.count < item.count){
+            throw Exception;
+        }
+
+        findItem.count -= item.count;
+        if(findItem.count === 0){
+            // remove item from user items and database
+            const index = this.items.indexOf(findItem);
+            this.items.splice(index, 1);
         }
     }
 
