@@ -44,6 +44,9 @@ export class UserController{
         const data: RecieveGetItem = JSON.parse(string_data);
 
         const user = await this.userService.findUserWithUUID(data.uuid);
+        const item = new Item(data.item_idx);
+        item.count = data.count;
+        user.useItem(item);
     }
 }
 
