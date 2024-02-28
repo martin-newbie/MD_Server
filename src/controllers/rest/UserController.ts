@@ -48,6 +48,22 @@ export class UserController{
         item.count = data.count;
         user.useItem(item);
     }
+
+    @Post("/test-get-item")
+    async testGetItem(@QueryParams("uuid") uuid: string, @QueryParams("item_idx") item_idx: number, @QueryParams("count") count: number){
+        const user = await this.userService.findUserWithUUID(uuid);
+        const item = new Item(item_idx);
+        item.count = count;
+        user.addItem(item);
+    }
+
+    @Post("/test-use-item")
+    async testUseItem(@QueryParams("uuid") uuid: string, @QueryParams("item_idx") item_idx: number, @QueryParams("count") count: number){
+        const user = await this.userService.findUserWithUUID(uuid);
+        const item = new Item(item_idx);
+        item.count = count;
+        user.useItem(item);
+    }
 }
 
 export class RecieveGetItem{
