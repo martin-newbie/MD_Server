@@ -56,7 +56,7 @@ export class UserController{
         const item = new Item(idx);
         item.count = count;
         user.addItem(item);
-        this.userService.updateUser(user);
+        await this.userService.updateUser(user);
     }
 
     async useItem(uuid: string, idx: number, count: number) {
@@ -64,8 +64,8 @@ export class UserController{
         const item = new Item(idx);
         item.count = count;
         const findItem = user.useItem(item);
-        this.userService.updateItem(findItem);
-        this.userService.updateUser(user);
+        await this.userService.updateItem(findItem);
+        await this.userService.updateUser(user);
     }
 }
 
