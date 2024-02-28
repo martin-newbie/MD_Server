@@ -65,4 +65,8 @@ export class UserService{
         const deck = decks[deck_index].initUnitId();
         return deck;
     }
+
+    async updateUser(user: User){
+        this.userRepos.saveUser(user);
+    }
 }

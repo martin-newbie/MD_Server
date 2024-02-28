@@ -37,6 +37,7 @@ export class UserController{
         const item = new Item(data.item_idx);
         item.count = data.count;
         user.addItem(item);
+        this.userService.updateUser(user);
     }
 
     @Post("/use-item")
@@ -47,22 +48,17 @@ export class UserController{
         const item = new Item(data.item_idx);
         item.count = data.count;
         user.useItem(item);
+        this.userService.updateUser(user);
     }
 
     @Post("/test-get-item")
     async testGetItem(@QueryParams("uuid") uuid: string, @QueryParams("item_idx") item_idx: number, @QueryParams("count") count: number){
-        const user = await this.userService.findUserWithUUID(uuid);
-        const item = new Item(item_idx);
-        item.count = count;
-        user.addItem(item);
+        this.getItem(JSON.stringify({"uuid": uuid, "item_idx": item_idx, "count": count}));
     }
 
     @Post("/test-use-item")
     async testUseItem(@QueryParams("uuid") uuid: string, @QueryParams("item_idx") item_idx: number, @QueryParams("count") count: number){
-        const user = await this.userService.findUserWithUUID(uuid);
-        const item = new Item(item_idx);
-        item.count = count;
-        user.useItem(item);
+        this.useItem(JSON.stringify({"uuid": uuid, "item_idx": item_idx, "count": count}));
     }
 }
 
