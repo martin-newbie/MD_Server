@@ -32,7 +32,7 @@ export class UserController{
     @Post("/get-item")
     async postGetItem(@BodyParams("input_data") string_data: string){
         const data: RecieveGetItem = JSON.parse(string_data);
-        this.getItem(data.uuid, data.item_idx, data.count);
+        await this.getItem(data.uuid, data.item_idx, data.count);
     }
 
     @Post("/use-item")
@@ -60,7 +60,6 @@ export class UserController{
     }
 
     async useItem(uuid: string, idx: number, count: number) {
-        
         const user = await this.userService.findUserIncludeItems(uuid);
         const item = new Item(idx);
         item.count = count;
