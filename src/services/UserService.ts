@@ -5,12 +5,17 @@ import { Unit } from "../entities/Unit";
 import { UserRepository } from "../repositories/UserRepository";
 import { Deck } from "../entities/Deck";
 import { Exception } from "@tsed/exceptions";
+import { ItemRepository } from "../repositories/ItemRepository";
+import { Item } from "../entities/Item";
 
 @Injectable()
 export class UserService{
 
     @Inject()
     protected userRepos: UserRepository;
+
+    @Inject()
+    protected itemRepos: ItemRepository;
 
     async testLoginWithNickname(nickname: string) {
 
@@ -58,6 +63,15 @@ export class UserService{
         return user;
     }
 
+    async findUserIncludeItems(uuid: string){
+        const user = await this.userRepos.findUserItems(uuid);
+        if(user == null || user == undefined){
+            throw new Exception(400, "no user found");
+        }
+
+        return user;
+    }
+
     async findUserDeck(uuid: string, deck_index: number){
         const decks = (await this.userRepos.findUserDecks(uuid))?.decks;
         if(decks === null || decks === undefined) throw Exception;
@@ -68,5 +82,9 @@ export class UserService{
 
     async updateUser(user: User){
         this.userRepos.saveUser(user);
+    }
+
+    async updateItem(item: Item){
+        this.itemRepos.updateItem(item);
     }
 }

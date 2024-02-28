@@ -44,11 +44,13 @@ export class UserController{
     async useItem(@BodyParams("input_data") string_data: string){
         const data: RecieveGetItem = JSON.parse(string_data);
 
-        const user = await this.userService.findUserWithUUID(data.uuid);
+        const user = await this.userService.findUserIncludeItems(data.uuid);
         const item = new Item(data.item_idx);
         item.count = data.count;
-        user.useItem(item);
+        const findItem = user.useItem(item);
+
         this.userService.updateUser(user);
+        this.userService.updateItem(findItem);
     }
 
     @Post("/test-get-item")

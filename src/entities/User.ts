@@ -105,22 +105,24 @@ export class User {
             this.items.push(item);
             item.user = this;
         }
+
+        return findItem;
     }
 
     useItem(item: Item){
         
         if(this.items == null){
             this.items = [];
-            throw Exception;
+            throw new Exception(400, "item is empty");
         }
 
         const findItem = this.items.find(i => i.idx === item.idx);
 
         if(findItem === null || findItem === undefined){
-            throw Exception;
+            throw new Exception(400, "item not found");
         }
         if(findItem.count < item.count){
-            throw Exception;
+            throw new Exception(400, "item count is below use count");
         }
 
         findItem.count -= item.count;
@@ -129,6 +131,8 @@ export class User {
             const index = this.items.indexOf(findItem);
             this.items.splice(index, 1);
         }
+
+        return findItem;
     }
 
     maxEnergy() {

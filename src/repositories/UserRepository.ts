@@ -46,4 +46,11 @@ export class UserRepository {
             relations: ['decks'],
         });
     }
+
+    findUserItems(uuid: string){
+        return this.repository.findOne({
+            where: {uuid: uuid},
+            relations: ['items']
+        });
+    }
 }
