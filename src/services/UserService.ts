@@ -85,10 +85,10 @@ export class UserService{
     }
 
     async updateItem(item: Item){
-        this.itemRepos.updateItem(item);
-    }
-
-    async deleteItem(item: Item){
-        this.itemRepos.deleteItem(item);
+        if (item.count == 0) {
+            this.itemRepos.deleteItem(item);
+        } else {
+            this.itemRepos.updateItem(item);
+        }
     }
 }
