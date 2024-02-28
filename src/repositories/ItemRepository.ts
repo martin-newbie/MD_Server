@@ -20,4 +20,7 @@ export class ItemRepository {
         this.repository.save(item);
     }
 
+    deleteItem(item: Item){
+        this.repository.remove(item);
+    }
 }

@@ -126,12 +126,6 @@ export class User {
         }
 
         findItem.count -= item.count;
-        if(findItem.count === 0){
-            // remove item from user items and database
-            const index = this.items.indexOf(findItem);
-            this.items.splice(index, 1);
-        }
-
         return findItem;
     }
 

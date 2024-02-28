@@ -30,7 +30,7 @@ export class UserController{
     }
 
     @Post("/get-item")
-    async getItem(@BodyParams("input_data") string_data: string){
+    async postGetItem(@BodyParams("input_data") string_data: string){
         const data: RecieveGetItem = JSON.parse(string_data);
 
         const user = await this.userService.findUserWithUUID(data.uuid);
@@ -41,26 +41,35 @@ export class UserController{
     }
 
     @Post("/use-item")
-    async useItem(@BodyParams("input_data") string_data: string){
+    async postUseItem(@BodyParams("input_data") string_data: string){
         const data: RecieveGetItem = JSON.parse(string_data);
-
-        const user = await this.userService.findUserIncludeItems(data.uuid);
-        const item = new Item(data.item_idx);
-        item.count = data.count;
-        const findItem = user.useItem(item);
-
-        this.userService.updateUser(user);
-        this.userService.updateItem(findItem);
+        await this.useItem(data.uuid, data.item_idx, data.count);
     }
 
     @Post("/test-get-item")
     async testGetItem(@QueryParams("uuid") uuid: string, @QueryParams("item_idx") item_idx: number, @QueryParams("count") count: number){
-        this.getItem(JSON.stringify({"uuid": uuid, "item_idx": item_idx, "count": count}));
+        this.postGetItem(JSON.stringify({"uuid": uuid, "item_idx": item_idx, "count": count}));
     }
 
     @Post("/test-use-item")
     async testUseItem(@QueryParams("uuid") uuid: string, @QueryParams("item_idx") item_idx: number, @QueryParams("count") count: number){
-        this.useItem(JSON.stringify({"uuid": uuid, "item_idx": item_idx, "count": count}));
+        await this.useItem(uuid, item_idx, count);
+    }
+
+    async useItem(uuid: string, idx: number, count: number) {
+        
+        const user = await this.userService.findUserIncludeItems(uuid);
+        const item = new Item(idx);
+        item.count = count;
+        const findItem = user.useItem(item);
+
+        if(findItem.count === 0){
+            this.userService.deleteItem(findItem);
+        }else{
+            this.userService.updateItem(findItem);
+        }
+
+        this.userService.updateUser(user);
     }
 }
 

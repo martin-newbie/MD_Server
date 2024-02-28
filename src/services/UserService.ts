@@ -87,4 +87,8 @@ export class UserService{
     async updateItem(item: Item){
         this.itemRepos.updateItem(item);
     }
+
+    async deleteItem(item: Item){
+        this.itemRepos.deleteItem(item);
+    }
 }
