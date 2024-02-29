@@ -2,7 +2,7 @@ import { UserService } from './../../services/UserService';
 import { Controller, Inject } from "@tsed/di";
 import { BodyParams, QueryParams } from "@tsed/platform-params";
 import { Post } from "@tsed/schema";
-import { InGameService } from "../../services/IngameService";
+import { InGameService, Reward } from "../../services/IngameService";
 
 @Controller("/ingame")
 export class InGameController {
@@ -45,15 +45,19 @@ export class InGameController {
         const user = await this.userService.findUserWithUUID(data.uuid);
         const deck = await this.userService.findUserDeck(data.uuid, data.deck_index);
 
+        let reward: Reward[] = [];
         if (data.is_win) {
-
+            reward = this.inGameService.getStageReward(data.stage_index, data.chapter_index);
         } else {
-            
+            const energyReward = new Reward(1, 0); // currency type, energy idx
+            energyReward.count = Math.floor(data.use_energy * 0.9);
         }
 
-
+        this.userService.applyReward(user, reward);
+        
         return {
-            "reward": [],
+            "is_win": data.is_win,
+            "reward": reward,
         }
 
     }

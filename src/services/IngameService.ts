@@ -14,6 +14,62 @@ export class InGameService{
         const chapterData: chapterData = JSON.parse(data);
         return chapterData.stageDatas[stage];
     }
+    
+    getStageReward(stage: number, chapter: number): Reward[] {
+        const rewardData = this.getStageRewardData(stage, chapter);
+
+        const rewards: Reward[] = [];
+        rewardData.datas.forEach(data => {
+            if(this.calculateRewardAcquire(data)){
+                const reward = new Reward(data.type, data.idx);
+                reward.count = this.calculateRewardCount(data);
+                rewards.push(reward);
+            }
+        });
+
+        return rewards;
+    }
+
+    private calculateRewardAcquire(data: RewardData) {
+        if(Math.random() > data.acquire_range) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    private calculateRewardCount(data: RewardData) {
+        return Math.floor(Math.random() * (data.count_max - data.count_min) + data.count_min);
+    }
+
+    private getStageRewardData(stage: number, chapter: number) {
+
+        return new StageReward(); // TODO: get stage reward from text data
+    } 
+}
+
+export class StageReward {
+    datas: RewardData[];
+}
+
+export class RewardData{
+    acquire_range: number;      // 0 ~ 1
+    count_min: number;
+    count_max: number;
+    
+    type: number;               // 0: item, 1: currency, 2: character
+    idx: number;
+}
+
+export class Reward{
+    type: number;           // 0: item, 1: currency, 2: character
+    index: number;
+    count: number;
+
+    constructor(_type: number, _idx: number){
+        this.type = _type;
+        this.index = _idx;
+    }
 }
 
 export class chapterData{

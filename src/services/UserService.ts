@@ -7,6 +7,7 @@ import { Deck } from "../entities/Deck";
 import { Exception } from "@tsed/exceptions";
 import { ItemRepository } from "../repositories/ItemRepository";
 import { Item } from "../entities/Item";
+import { Reward } from "./IngameService";
 
 @Injectable()
 export class UserService{
@@ -90,5 +91,34 @@ export class UserService{
         } else {
             this.itemRepos.updateItem(item);
         }
+    }
+
+    async applyReward(user: User, reward: Reward[]) {
+
+        reward.forEach(async reward => {
+            switch(reward.type){
+                case 0:
+                    const item = new Item(reward.index);
+                    item.count = reward.count;
+                    user.addItem(item);
+                    break;
+                case 1:
+                    // TODO : add currency by idx
+                    break;
+                case 2:
+                    const units = (await this.userRepos.findUserUnits(user.uuid))?.units;
+                    if(units === null || units === undefined) throw Exception;
+
+                    const findUnit = units.find(unit => unit.index === reward.index);
+                    if(findUnit === null || findUnit === undefined){
+                        user.addUnit(new Unit(reward.index));
+                    }else{
+                        // TODO : add duplicated unit item
+                    }
+                    break;
+            }
+        });
+
+        this.userRepos.saveUser(user);
     }
 }
