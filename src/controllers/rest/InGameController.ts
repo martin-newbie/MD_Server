@@ -18,8 +18,12 @@ export class InGameController {
     async gameEnter(@BodyParams("input_data") string_data: string) {
 
         const data: RecieveGameEnter = JSON.parse(string_data);
+        const user = await this.userService.findUserWithUUID(data.uuid);
         const deck = await this.userService.findUserDeck(data.uuid, data.deck_index);
         const stageData = this.inGameService.findStageData(data.selected_stage, data.selected_chapter);
+
+        user.updateEnergy(-data.energy_use);
+        await this.userService.updateUser(user);
 
         return{
             "success": true,

@@ -38,11 +38,11 @@ export class User {
     @Required()
     coin: number;
 
-    @Column({default: 0})
+    @Column({ default: 0 })
     @Required()
     energy: number;
 
-    @Column({default: null})
+    @Column({ default: null })
     @Required()
     last_energy_updated: Date;
 
@@ -57,8 +57,8 @@ export class User {
     decks: Deck[];
 
     @CollectionOf(StagePerfaction)
-    @OneToMany(type=> StagePerfaction, (stagePerfaction) => stagePerfaction.user, {cascade: ['insert']})
-    @JoinColumn({name: 'uuid', referencedColumnName: 'user_uuid'})
+    @OneToMany(type => StagePerfaction, (stagePerfaction) => stagePerfaction.user, { cascade: ['insert'] })
+    @JoinColumn({ name: 'uuid', referencedColumnName: 'user_uuid' })
     stage_perfactions: StagePerfaction[];
 
     @CollectionOf(Item)
@@ -75,8 +75,8 @@ export class User {
         unit.user = this;
     }
 
-    addDeck(deck: Deck){
-        if(this.decks == null){
+    addDeck(deck: Deck) {
+        if (this.decks == null) {
             this.decks = [];
         }
 
@@ -84,8 +84,8 @@ export class User {
         deck.user = this;
     }
 
-    addStagePerfaction(stagePerfaction: StagePerfaction){
-        if(this.stage_perfactions === null){
+    addStagePerfaction(stagePerfaction: StagePerfaction) {
+        if (this.stage_perfactions === null) {
             this.stage_perfactions = [];
         }
 
@@ -93,8 +93,8 @@ export class User {
         stagePerfaction.user = this;
     }
 
-    addItem(item: Item){
-        if(this.items == null){
+    addItem(item: Item) {
+        if (this.items == null) {
             this.items = [];
         }
 
@@ -109,19 +109,19 @@ export class User {
         return findItem;
     }
 
-    useItem(item: Item){
-        
-        if(this.items == null){
+    useItem(item: Item) {
+
+        if (this.items == null) {
             this.items = [];
             throw new Exception(400, "item is empty");
         }
 
         const findItem = this.items.find(i => i.idx === item.idx);
 
-        if(findItem === null || findItem === undefined){
+        if (findItem === null || findItem === undefined) {
             throw new Exception(400, "item not found");
         }
-        if(findItem.count < item.count){
+        if (findItem.count < item.count) {
             throw new Exception(400, "item count is below use count");
         }
 
@@ -129,10 +129,10 @@ export class User {
         return findItem;
     }
 
-    getEnergy(){
-        
-        if(this.energy < this.maxEnergy()){
-            
+    getEnergy() {
+
+        if (this.energy < this.maxEnergy()) {
+
             const now = new Date();
             const diff = now.getTime() - this.last_energy_updated.getTime();
             const addedEnergy = Math.floor((diff / 1000) / 60);
@@ -148,7 +148,9 @@ export class User {
         return this.energy;
     }
 
-    updateEnergy(updated: number){
+    updateEnergy(updated: number) {
+
+        this.getEnergy();
 
         if (this.energy + updated < 0) {
             throw new Exception(400, "not enough energy");
