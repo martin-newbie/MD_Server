@@ -129,7 +129,7 @@ export class User {
         return findItem;
     }
 
-    calculateEnergy(){
+    getEnergy(){
         
         if(this.energy < this.maxEnergy()){
             
@@ -138,18 +138,27 @@ export class User {
             const addedEnergy = Math.floor((diff / 1000) / 60);
 
             this.energy += addedEnergy;
-            if(this.energy > this.maxEnergy()){
+            if (this.energy > this.maxEnergy()) {
                 this.energy = this.maxEnergy();
             }
-            
+
             this.last_energy_updated.setMilliseconds(addedEnergy * 1000 + this.last_energy_updated.getMilliseconds());
         }
 
         return this.energy;
     }
 
-    updateEnergy(energy: number){
+    updateEnergy(updated: number){
 
+        if (this.energy + updated < 0) {
+            throw new Exception(400, "not enough energy");
+        }
+
+        if (this.energy >= this.maxEnergy() && this.energy + updated < this.maxEnergy()) {
+            this.last_energy_updated = new Date();
+        }
+
+        this.energy += updated;
     }
 
     maxEnergy() {
