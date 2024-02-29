@@ -129,6 +129,29 @@ export class User {
         return findItem;
     }
 
+    calculateEnergy(){
+        
+        if(this.energy < this.maxEnergy()){
+            
+            const now = new Date();
+            const diff = now.getTime() - this.last_energy_updated.getTime();
+            const addedEnergy = Math.floor((diff / 1000) / 60);
+
+            this.energy += addedEnergy;
+            if(this.energy > this.maxEnergy()){
+                this.energy = this.maxEnergy();
+            }
+            
+            this.last_energy_updated.setMilliseconds(addedEnergy * 1000 + this.last_energy_updated.getMilliseconds());
+        }
+
+        return this.energy;
+    }
+
+    updateEnergy(energy: number){
+
+    }
+
     maxEnergy() {
         return 100 + this.level * 2;
     }
