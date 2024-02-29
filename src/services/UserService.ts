@@ -57,7 +57,7 @@ export class UserService{
 
     async findUserWithUUID(uuid: string) {
         const user = await this.userRepos.findUserByUUID(uuid);
-        if (user == null || user == undefined) {
+        if (!user) {
             throw Exception;
         }
 
@@ -66,7 +66,7 @@ export class UserService{
 
     async findUserIncludeItems(uuid: string){
         const user = await this.userRepos.findUserItems(uuid);
-        if(user == null || user == undefined){
+        if (!user) {
             throw new Exception(400, "no user found");
         }
 
@@ -75,7 +75,7 @@ export class UserService{
 
     async findUserDeck(uuid: string, deck_index: number){
         const decks = (await this.userRepos.findUserDecks(uuid))?.decks;
-        if(decks === null || decks === undefined) throw Exception;
+        if(!decks) throw Exception;
 
         const deck = decks[deck_index].initUnitId();
         return deck;
@@ -107,12 +107,11 @@ export class UserService{
                     break;
                 case 2:
                     const units = (await this.userRepos.findUserUnits(user.uuid))?.units;
-                    if(units === null || units === undefined) throw Exception;
+                    if(!units) throw Exception;
 
-                    const findUnit = units.find(unit => unit.index === reward.index);
-                    if(findUnit === null || findUnit === undefined){
+                    if (!units.some(unit => unit.index === reward.index)) {
                         user.addUnit(new Unit(reward.index));
-                    }else{
+                    } else {
                         // TODO : add duplicated unit item
                     }
                     break;

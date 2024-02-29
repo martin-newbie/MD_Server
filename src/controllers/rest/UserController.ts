@@ -15,7 +15,7 @@ export class UserController{
         let isError = false;
         console.log(nickname);
 
-        if (nickname === "" || nickname === null || nickname === undefined) {
+        if (nickname === "" || !nickname) {
             throw {
                 "code": 400,
                 "message": "nickname is required"

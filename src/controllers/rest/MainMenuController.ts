@@ -20,7 +20,7 @@ export class MainMenuController{
         const data: RecieveUserData = JSON.parse(string_data);
 
         const units = (await this.userRepos.findUserUnits(data.uuid))?.units;
-        if(units == null || units== undefined) throw Exception;
+        if(!units) throw Exception;
 
         units.forEach(unit => {
             unit.initSkillLevel();
@@ -36,7 +36,7 @@ export class MainMenuController{
         const data: RecieveUserData = JSON.parse(string_data);
 
         const decks = (await this.userRepos.findUserDecks(data.uuid))?.decks;
-        if(decks == null || decks== undefined) throw Exception;
+        if(!decks) throw Exception;
 
         decks.forEach(deck => {
             deck.initUnitId();

@@ -98,15 +98,14 @@ export class User {
             this.items = [];
         }
 
-        const findItem = this.items.find(item => item.idx === item.idx);
-        if (findItem !== null && findItem !== undefined) {
+        const findItem = this.items.find(i => i.idx === item.idx);
+
+        if (findItem) {
             findItem.count += item.count;
         } else {
             this.items.push(item);
             item.user = this;
         }
-
-        return findItem;
     }
 
     useItem(item: Item) {
@@ -118,7 +117,7 @@ export class User {
 
         const findItem = this.items.find(i => i.idx === item.idx);
 
-        if (findItem === null || findItem === undefined) {
+        if (!findItem) {
             throw new Exception(400, "item not found");
         }
         if (findItem.count < item.count) {
