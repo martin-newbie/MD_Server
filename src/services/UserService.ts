@@ -119,6 +119,6 @@ export class UserService{
             }
         });
 
-        this.userRepos.saveUser(user);
+        await this.userRepos.saveUser(user);
     }
 }

@@ -1,4 +1,4 @@
-import { UserService } from './../../services/UserService';
+import { UserService } from '../../services/UserService';
 import { Controller, Inject } from "@tsed/di";
 import { BodyParams, QueryParams } from "@tsed/platform-params";
 import { Post } from "@tsed/schema";
@@ -43,7 +43,11 @@ export class InGameController {
 
         const data: RecieveGameEnd = JSON.parse(string_data);
         const user = await this.userService.findUserWithUUID(data.uuid);
-        const deck = await this.userService.findUserDeck(data.uuid, data.deck_index);
+        const deck = await this.userService.findUserDeck(data.uuid, data.deck_index); 
+
+        // TODO : upgrade exp of each deck's units
+        // TODO : upgrade user exp
+        // TODO : update stage perfaction
 
         let reward: Reward[] = [];
         if (data.is_win) {
@@ -53,8 +57,8 @@ export class InGameController {
             energyReward.count = Math.floor(data.use_energy * 0.9);
         }
 
-        this.userService.applyReward(user, reward);
-        
+        await this.userService.applyReward(user, reward);
+
         return {
             "is_win": data.is_win,
             "reward": reward,
