@@ -53,8 +53,8 @@ export class InGameController {
         if (data.is_win) {
             reward = this.inGameService.getStageReward(data.stage_index, data.chapter_index);
         } else {
-            const energyReward = new Reward(1, 0); // currency type, energy idx
-            energyReward.count = Math.floor(data.use_energy * 0.9);
+            const energyReward = new Reward(1, 0, Math.floor(data.use_energy * 0.9)); // currency type, energy idx
+            reward.push(energyReward);
         }
 
         await this.userService.applyReward(user, reward);

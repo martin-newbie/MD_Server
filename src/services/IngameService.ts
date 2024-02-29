@@ -21,8 +21,7 @@ export class InGameService{
         const rewards: Reward[] = [];
         rewardData.datas.forEach(data => {
             if(this.calculateRewardAcquire(data)){
-                const reward = new Reward(data.type, data.idx);
-                reward.count = this.calculateRewardCount(data);
+                const reward = new Reward(data.type, data.idx, this.calculateRewardCount(data));
                 rewards.push(reward);
             }
         });
@@ -66,9 +65,10 @@ export class Reward{
     index: number;
     count: number;
 
-    constructor(_type: number, _idx: number){
+    constructor(_type: number, _idx: number, _count: number){
         this.type = _type;
         this.index = _idx;
+        this.count = _count;
     }
 }
 
