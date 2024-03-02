@@ -42,9 +42,14 @@ export class InGameService{
     }
 
     private getStageRewardData(stage: number, chapter: number) {
-
+        
         return new StageReward(); // TODO: get stage reward from text data
     } 
+}
+
+export class ChapterReward {
+    chapter: number;
+    datas: StageReward[];
 }
 
 export class StageReward {
