@@ -49,31 +49,20 @@ export class InGameController {
         // TODO : upgrade user exp
         // TODO : update stage perfaction
 
-        let reward: Reward[] = [];
         if (data.is_win) {
-            reward = this.inGameService.getStageReward(data.stage_index, data.chapter_index);
+            // check is first win
+            // check is first perfect win
+            // give reward by those check
+            // update stage perfaction with data
         } else {
-            const energyReward = new Reward(1, 0, Math.floor(data.use_energy * 0.9)); // currency type, energy idx
-            reward.push(energyReward);
+            // give back used energy
         }
-
-        await this.userService.applyReward(user, reward);
 
         return {
             "is_win": data.is_win,
-            "reward": reward,
+            "reward": null,
         }
 
-    }
-
-    @Post("/test-reward")
-    async testReward(@QueryParams("stage") stage: number, @QueryParams("chapter") chapter: number, @QueryParams("count") count: number) {
-        let rewardResult: Reward[][] = [];
-        for (let i = 0; i < count; i++) {
-            const reward = this.inGameService.getStageReward(stage, chapter);
-            rewardResult.push(reward);
-        }
-        return rewardResult;
     }
 }
 

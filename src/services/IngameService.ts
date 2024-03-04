@@ -14,49 +14,6 @@ export class InGameService{
         const chapterData: chapterData = JSON.parse(data);
         return chapterData.stageDatas[stage];
     }
-    
-    getStageReward(stage: number, chapter: number): Reward[] {
-        const rewardData = this.getStageRewardData(stage, chapter);
-
-        const rewards: Reward[] = [];
-        rewardData.datas.forEach(data => {
-            if(this.calculateRewardAcquire(data)){
-                const reward = new Reward(data.type, data.idx, this.calculateRewardCount(data));
-                rewards.push(reward);
-            }
-        });
-
-        return rewards;
-    }
-
-    private calculateRewardAcquire(data: RewardData) {
-        if(Math.random() > data.acquire_range) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    private calculateRewardCount(data: RewardData) {
-        return Math.floor(Math.random() * (data.count_max - data.count_min) + data.count_min);
-    }
-
-    private getStageRewardData(stage: number, chapter: number): StageReward {
-        const path = `./src/data/reward/${chapter}.json`;
-        const data = fs.readFileSync(path, 'utf8');
-        const rewardData : ChapterReward = JSON.parse(data);
-
-        return rewardData.datas[stage];
-    } 
-}
-
-export class ChapterReward {
-    chapter: number;
-    datas: StageReward[];
-}
-
-export class StageReward {
-    datas: RewardData[];
 }
 
 export class RewardData{
