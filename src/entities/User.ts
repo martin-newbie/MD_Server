@@ -127,7 +127,7 @@ export class User {
         findItem.count -= item.count;
         return findItem;
     }
-
+    
     getEnergy() {
 
         if (this.energy < this.maxEnergy()) {
@@ -145,6 +145,17 @@ export class User {
         }
 
         return this.energy;
+    }
+
+    updateCurrency(idx: number, count: number) {
+        switch (idx) {
+            case 0:
+                break;
+            case 1:
+                break;
+            case 2:
+                break;
+        }
     }
 
     updateEnergy(updated: number) {

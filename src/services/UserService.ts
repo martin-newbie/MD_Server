@@ -103,7 +103,7 @@ export class UserService{
                     user.addItem(item);
                     break;
                 case 1:
-                    // TODO : add currency by idx
+                    user.updateCurrency(reward.index, reward.count);
                     break;
                 case 2:
                     const units = (await this.userRepos.findUserUnits(user.uuid))?.units;
