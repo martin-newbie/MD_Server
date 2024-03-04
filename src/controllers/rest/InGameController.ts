@@ -65,6 +65,16 @@ export class InGameController {
         }
 
     }
+
+    @Post("/test-reward")
+    async testReward(@QueryParams("stage") stage: number, @QueryParams("chapter") chapter: number, @QueryParams("count") count: number) {
+        let rewardResult: Reward[][] = [];
+        for (let i = 0; i < count; i++) {
+            const reward = this.inGameService.getStageReward(stage, chapter);
+            rewardResult.push(reward);
+        }
+        return rewardResult;
+    }
 }
 
 export class RecieveGameEnter{

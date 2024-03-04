@@ -41,9 +41,12 @@ export class InGameService{
         return Math.floor(Math.random() * (data.count_max - data.count_min) + data.count_min);
     }
 
-    private getStageRewardData(stage: number, chapter: number) {
-        
-        return new StageReward(); // TODO: get stage reward from text data
+    private getStageRewardData(stage: number, chapter: number): StageReward {
+        const path = `./src/data/reward/${chapter}.json`;
+        const data = fs.readFileSync(path, 'utf8');
+        const rewardData : ChapterReward = JSON.parse(data);
+
+        return rewardData.datas[stage];
     } 
 }
 
