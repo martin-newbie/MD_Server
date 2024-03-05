@@ -8,6 +8,8 @@ import { Exception } from "@tsed/exceptions";
 import { ItemRepository } from "../repositories/ItemRepository";
 import { Item } from "../entities/Item";
 import { Reward } from "./IngameService";
+import { StageResult } from "../entities/StageResult";
+import { StageRepository } from "../repositories/StageRepository";
 
 @Injectable()
 export class UserService{
@@ -17,6 +19,9 @@ export class UserService{
 
     @Inject()
     protected itemRepos: ItemRepository;
+
+    @Inject()
+    protected stageRepos: StageRepository;
 
     async testLoginWithNickname(nickname: string) {
 
@@ -92,6 +97,10 @@ export class UserService{
 
     async updateUser(user: User){
         this.userRepos.saveUser(user);
+    }
+
+    async updateStageResult(stageResult: StageResult) {
+        this.stageRepos.saveStage(stageResult);
     }
 
     async updateItem(item: Item){

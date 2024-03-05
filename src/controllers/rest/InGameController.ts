@@ -82,12 +82,12 @@ export class InGameController {
             if (data.perfaction[0] && data.perfaction[1] && data.perfaction[2]) {
                 if (!stageResult) {
                     // 초회 3별
-                    reward.push(new Reward(1, 0, 30));
+                    reward.push(new Reward(1, 0, 40));
                 } else if (stageResult.isAllConditionTrue()) {
                     // 중복 3별
                 } else {
                     // 재도전 3별
-                    reward.push(new Reward(1, 0, 30));
+                    reward.push(new Reward(1, 0, 40));
                 }
             }
 
@@ -106,6 +106,7 @@ export class InGameController {
                     stageResult.condition_1 = stageResult.condition_1 || data.perfaction[0];
                     stageResult.condition_2 = stageResult.condition_2 || data.perfaction[1];
                     stageResult.condition_3 = stageResult.condition_3 || data.perfaction[2];
+                    this.userService.updateStageResult(stageResult);
                 }
             }
             await this.userService.updateUser(user);
