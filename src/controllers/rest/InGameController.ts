@@ -45,8 +45,7 @@ export class InGameController {
     async gameEnd(@BodyParams("input_data") string_data: string) {
 
         const data: RecieveGameEnd = JSON.parse(string_data);
-        const user = await this.userService.findUserWithUUID(data.uuid);
-        const reward = this.updateStageResult(user, data);
+        const reward = await this.updateStageResult(data);
 
         return {
             "is_win": data.is_win,
@@ -56,23 +55,29 @@ export class InGameController {
 
     @Post("/test-game-end")
     async testGameEnd(@QueryParams("uuid") uuid: string, @QueryParams("condition_1") cond1: boolean, @QueryParams("condition_2") cond2: boolean, @QueryParams("condition_3") cond3: boolean, @QueryParams("stage") stage: number, @QueryParams("chapter") chapter: number) {
-        const user = await this.userService.findUserWithUUID(uuid);
         const data = new RecieveGameEnd();
         data.uuid = uuid;
         data.stage_index = stage;
         data.chapter_index = chapter;
         data.is_win = cond3;
         data.perfaction = [cond1, cond2, cond3];
+        const reward = await this.updateStageResult(data);
+
+        return {
+            "is_win": data.is_win,
+            "reward": reward,
+        }
     }
 
-    async updateStageResult(user: User, data: RecieveGameEnd) {
+    async updateStageResult(data: RecieveGameEnd) {
         const reward: Reward[] = [];
 
         // TODO : upgrade exp of each deck's units
         // TODO : upgrade user exp
 
         if (data.is_win) {
-            const stageResult = await this.userService.findUserStageResult(data.uuid, data.stage_index, data.chapter_index);
+            const user = await this.userService.findUserWithStageResult(data.uuid);
+            const stageResult = user.stage_result.find((result) => result.chapter_idx == data.chapter_index && result.stage_idx == data.stage_index);
 
             if (data.perfaction[0] && data.perfaction[1] && data.perfaction[2]) {
                 if (!stageResult) {
