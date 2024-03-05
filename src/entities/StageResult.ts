@@ -32,4 +32,8 @@ export class StageResult {
 
     @ManyToOne(()=>User, (user) => user.stage_result)
     user: User;
+
+    isAllConditionTrue(){
+        return this.condition_1 && this.condition_2 && this.condition_3;
+    }
 }

@@ -84,7 +84,7 @@ export class User {
         deck.user = this;
     }
 
-    addStagePerfaction(stagePerfaction: StageResult) {
+    addStageResult(stagePerfaction: StageResult) {
         if (this.stage_result === null) {
             this.stage_result = [];
         }

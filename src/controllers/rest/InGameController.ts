@@ -3,6 +3,9 @@ import { Controller, Inject } from "@tsed/di";
 import { BodyParams, QueryParams } from "@tsed/platform-params";
 import { Post } from "@tsed/schema";
 import { InGameService, Reward } from "../../services/IngameService";
+import { StageResult } from '../../entities/StageResult';
+import { User } from '../../entities/User';
+import { RecieveUserData } from './MainMenuController';
 
 @Controller("/ingame")
 export class InGameController {
@@ -42,28 +45,75 @@ export class InGameController {
     async gameEnd(@BodyParams("input_data") string_data: string) {
 
         const data: RecieveGameEnd = JSON.parse(string_data);
-        const stageResult = await this.userService.findUserStageResult(data.uuid, data.stage_index, data.chapter_index);
-        const deck = await this.userService.findUserDeck(data.uuid, data.deck_index); 
-
-        // TODO : upgrade exp of each deck's units
-        // TODO : upgrade user exp
-        // TODO : update stage perfaction
-
-        if (data.is_win) {
-            // check is first win
-            // check is first perfect win
-            // give reward by those check
-            // update stage perfaction with data
-        } else {
-            // give back used energy
-        }
+        const user = await this.userService.findUserWithUUID(data.uuid);
+        const reward = this.updateStageResult(user, data);
 
         return {
             "is_win": data.is_win,
-            "reward": null,
+            "reward": reward,
+        }
+    }
+
+    @Post("/test-game-end")
+    async testGameEnd(@QueryParams("uuid") uuid: string, @QueryParams("condition_1") cond1: boolean, @QueryParams("condition_2") cond2: boolean, @QueryParams("condition_3") cond3: boolean, @QueryParams("stage") stage: number, @QueryParams("chapter") chapter: number) {
+        const user = await this.userService.findUserWithUUID(uuid);
+        const data = new RecieveGameEnd();
+        data.uuid = uuid;
+        data.stage_index = stage;
+        data.chapter_index = chapter;
+        data.is_win = cond3;
+        data.perfaction = [cond1, cond2, cond3];
+    }
+
+    async updateStageResult(user: User, data: RecieveGameEnd) {
+        const reward: Reward[] = [];
+
+        // TODO : upgrade exp of each deck's units
+        // TODO : upgrade user exp
+
+        if (data.is_win) {
+            const stageResult = await this.userService.findUserStageResult(data.uuid, data.stage_index, data.chapter_index);
+
+            if (data.perfaction[0] && data.perfaction[1] && data.perfaction[2]) {
+                if (!stageResult) {
+                    // 초회 3별
+                    reward.push(new Reward(1, 0, 30));
+                } else if (stageResult.isAllConditionTrue()) {
+                    // 중복 3별
+                } else {
+                    // 재도전 3별
+                    reward.push(new Reward(1, 0, 30));
+                }
+            }
+
+            if (!stageResult) {
+                const result = new StageResult();
+                result.chapter_idx = data.chapter_index;
+                result.stage_idx = data.stage_index;
+                result.condition_1 = data.perfaction[0];
+                result.condition_2 = data.perfaction[1];
+                result.condition_3 = data.perfaction[2];
+                reward.push(new Reward(1, 0, 30));
+                user.addStageResult(result);
+            } else {
+                if (!stageResult.isAllConditionTrue()) {
+                    // 3별이 아니면 갱신
+                    stageResult.condition_1 = stageResult.condition_1 || data.perfaction[0];
+                    stageResult.condition_2 = stageResult.condition_2 || data.perfaction[1];
+                    stageResult.condition_3 = stageResult.condition_3 || data.perfaction[2];
+                }
+            }
+            await this.userService.updateUser(user);
+
+        } else {
+            // give back used energy
+            reward.push(new Reward(1, 1, Math.floor(data.use_energy * 0.9)));
         }
 
+        return reward;
     }
+
+
 }
 
 export class RecieveGameEnter{
