@@ -73,6 +73,16 @@ export class UserService{
         return user;
     }
 
+    async findUserStageResult(uuid: string, stage: number, chapter: number) {
+        const user = await this.userRepos.findUserStageResult(uuid);
+        if (!user) {
+            throw new Exception(400, "no user found");
+        }
+
+        const stagePerfaction = user.stage_result.find(stagePerfaction => stagePerfaction.stage_idx === stage && stagePerfaction.chapter_idx === chapter);
+        return stagePerfaction;
+    }
+
     async findUserDeck(uuid: string, deck_index: number){
         const decks = (await this.userRepos.findUserDecks(uuid))?.decks;
         if(!decks) throw Exception;

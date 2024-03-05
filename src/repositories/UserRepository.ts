@@ -53,4 +53,11 @@ export class UserRepository {
             relations: ['items']
         });
     }
+
+    findUserStageResult(uuid: string){
+        return this.repository.findOne({
+            where: {uuid: uuid},
+            relations: ['stage_result']
+        });
+    }
 }

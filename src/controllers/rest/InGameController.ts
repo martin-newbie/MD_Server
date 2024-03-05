@@ -42,7 +42,7 @@ export class InGameController {
     async gameEnd(@BodyParams("input_data") string_data: string) {
 
         const data: RecieveGameEnd = JSON.parse(string_data);
-        const user = await this.userService.findUserWithUUID(data.uuid);
+        const stageResult = await this.userService.findUserStageResult(data.uuid, data.stage_index, data.chapter_index);
         const deck = await this.userService.findUserDeck(data.uuid, data.deck_index); 
 
         // TODO : upgrade exp of each deck's units

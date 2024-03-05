@@ -4,7 +4,7 @@ import { User } from "./User";
 
 
 @Entity()
-export class StagePerfaction {
+export class StageResult {
 
     @PrimaryGeneratedColumn()
     @Required()
@@ -30,6 +30,6 @@ export class StagePerfaction {
     @Required()
     condition_3: boolean;
 
-    @ManyToOne(()=>User, (user) => user.stage_perfactions)
+    @ManyToOne(()=>User, (user) => user.stage_result)
     user: User;
 }

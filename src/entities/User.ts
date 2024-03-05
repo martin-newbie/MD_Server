@@ -2,7 +2,7 @@ import { CollectionOf, Property, Required } from "@tsed/schema";
 import { Column, Entity, JoinColumn, OneToMany, PrimaryColumn, PrimaryGeneratedColumn, Unique } from "typeorm";
 import { Unit } from "./Unit";
 import { Deck } from "./Deck";
-import { StagePerfaction } from "./StagePerfaction";
+import { StageResult as StageResult } from "./StageResult";
 import { Item } from "./Item";
 import { Exception } from "@tsed/exceptions";
 
@@ -56,10 +56,10 @@ export class User {
     @JoinColumn({ name: 'uuid', referencedColumnName: "user_uuid" })
     decks: Deck[];
 
-    @CollectionOf(StagePerfaction)
-    @OneToMany(type => StagePerfaction, (stagePerfaction) => stagePerfaction.user, { cascade: ['insert'] })
+    @CollectionOf(StageResult)
+    @OneToMany(type => StageResult, (stagePerfaction) => stagePerfaction.user, { cascade: ['insert'] })
     @JoinColumn({ name: 'uuid', referencedColumnName: 'user_uuid' })
-    stage_perfactions: StagePerfaction[];
+    stage_result: StageResult[];
 
     @CollectionOf(Item)
     @OneToMany(type => Item, (item) => item.user, { cascade: ['insert'] })
@@ -84,12 +84,12 @@ export class User {
         deck.user = this;
     }
 
-    addStagePerfaction(stagePerfaction: StagePerfaction) {
-        if (this.stage_perfactions === null) {
-            this.stage_perfactions = [];
+    addStagePerfaction(stagePerfaction: StageResult) {
+        if (this.stage_result === null) {
+            this.stage_result = [];
         }
 
-        this.stage_perfactions.push(stagePerfaction);
+        this.stage_result.push(stagePerfaction);
         stagePerfaction.user = this;
     }
 
