@@ -73,7 +73,7 @@ export class InGameService{
 
     async updateExp(user_uuid: string, deck_index: number, exp: number) {
 
-        let response = "";
+        let units: number[] = [];
 
         const user = await this.userRepos.findUserDecks(user_uuid);
         if(!user) throw new Error('user not found');
@@ -85,13 +85,13 @@ export class InGameService{
             const unit = user.units.find(unit => unit.id == id);
             if(unit){
                 this.unitRepos.updateExp(unit, exp);
-                response += `unit ${unit?.id} exp: ${unit?.exp} level: ${unit?.level}\n`;
+                units.push(unit.id);
             }
             
         });
 
         await this.userRepos.saveUser(user);
-        return response;
+        return units;
     }
 }
 

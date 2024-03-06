@@ -43,11 +43,13 @@ export class InGameController {
 
         const data: RecieveGameEnd = JSON.parse(string_data);
         const reward = await this.inGameService.updateStageResult(data);
-        await this.inGameService.updateExp(data.uuid, data.deck_index, data.use_energy);
+        const units = await this.inGameService.updateExp(data.uuid, data.deck_index, data.use_energy);
 
         return {
             "is_win": data.is_win,
             "reward": reward,
+            "exp": data.use_energy,
+            "units": units,
         }
     }
 
