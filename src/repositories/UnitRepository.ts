@@ -20,4 +20,9 @@ export class UnitRepository {
     saveUnit(unit: Unit){
         this.repository.save(unit);
     }
+
+    updateExp(unit: Unit, exp: number){
+        unit.updateExp(exp);
+        this.saveUnit(unit);
+    }
 }

@@ -84,8 +84,7 @@ export class InGameService{
         deck.unit_indexes.forEach(id => {
             const unit = user.units.find(unit => unit.id == id);
             if(unit){
-                unit.updateExp(exp);
-                this.unitRepos.saveUnit(unit);
+                this.unitRepos.updateExp(unit, exp);
                 response += `unit ${unit?.id} exp: ${unit?.exp} level: ${unit?.level}\n`;
             }
             
