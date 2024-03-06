@@ -4,15 +4,18 @@ import * as fs from 'fs';
 import { RecieveGameEnd } from "../controllers/rest";
 import { UserService } from "./UserService";
 import { StageResult } from "../entities/StageResult";
+import { UnitRepository } from "../repositories/UnitRepository";
 
 @Injectable()
 export class InGameService{
 
     @Inject()
     protected userRepos: UserRepository;
+    @Inject()
+    protected unitRepos: UnitRepository;
     
     @Inject()
-    protected userService: UserService;
+    protected userService: UserService;    
 
     findStageData(stage: number, chapter: number) {
         const path = `./src/data/stage/${chapter}.json`;
@@ -24,9 +27,6 @@ export class InGameService{
     async updateStageResult(data: RecieveGameEnd) {
         const reward: Reward[] = [];
         const user = await this.userService.findUserWithStageResult(data.uuid);
-
-        // TODO : upgrade exp of each deck's units
-        // TODO : upgrade user exp
 
         if (data.is_win) {
             const stageResult = user.stage_result.find((result) => result.chapter_idx == data.chapter_index && result.stage_idx == data.stage_index);
@@ -71,6 +71,29 @@ export class InGameService{
         return reward;
     }
 
+    async updateExp(user_uuid: string, deck_index: number, exp: number) {
+
+        let response = "";
+
+        const user = await this.userRepos.findUserDecks(user_uuid);
+        if(!user) throw new Error('user not found');
+
+        user.updateExp(exp);
+        const deck = user.decks[deck_index];
+        deck.initUnitId();
+        deck.unit_indexes.forEach(id => {
+            const unit = user.units.find(unit => unit.id == id);
+            if(unit){
+                unit.updateExp(exp);
+                this.unitRepos.saveUnit(unit);
+                response += `unit ${unit?.id} exp: ${unit?.exp} level: ${unit?.level}\n`;
+            }
+            
+        });
+
+        await this.userRepos.saveUser(user);
+        return response;
+    }
 }
 
 export class RewardData{

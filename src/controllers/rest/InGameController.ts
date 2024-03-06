@@ -43,6 +43,7 @@ export class InGameController {
 
         const data: RecieveGameEnd = JSON.parse(string_data);
         const reward = await this.inGameService.updateStageResult(data);
+        await this.inGameService.updateExp(data.uuid, data.deck_index, data.use_energy);
 
         return {
             "is_win": data.is_win,
@@ -66,6 +67,14 @@ export class InGameController {
         }
     }
 
+    @Post("/test-exp")
+    async testExp(@QueryParams("uuid") uuid: string, @QueryParams("deck_index") deckIndex: number, @QueryParams("exp") exp: number) {
+        const response = await this.inGameService.updateExp(uuid, deckIndex, exp);
+        return {
+            "success": true,
+            "response": response,
+        }
+    }
 
 }
 

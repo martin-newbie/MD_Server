@@ -5,6 +5,7 @@ import { Deck } from "./Deck";
 import { StageResult as StageResult } from "./StageResult";
 import { Item } from "./Item";
 import { Exception } from "@tsed/exceptions";
+import fs from 'fs';
 
 @Entity({ name: 'user' })
 @Unique('user_uuid', ['uuid'])
@@ -65,6 +66,21 @@ export class User {
     @OneToMany(type => Item, (item) => item.user, { cascade: ['insert'] })
     @JoinColumn({ name: 'uuid', referencedColumnName: 'user_uuid' })
     items: Item[];
+
+    updateExp(extra: number) {
+        this.exp += extra;
+        while (this.getRequireExp(this.level) <= this.exp) {
+            this.exp -= this.getRequireExp(this.level);
+            this.level++;
+        }
+    }
+
+    getRequireExp(level: number) {
+        const dataPath = 'src/data/userExpTable.txt';
+        const data = fs.readFileSync(dataPath, 'utf-8');
+        const exp = Number.parseInt(data.split('\n')[level]);
+        return exp;
+    }
 
     addUnit(unit: Unit) {
         if (this.units == null) {

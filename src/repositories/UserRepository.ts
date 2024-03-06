@@ -43,7 +43,7 @@ export class UserRepository {
     findUserDecks(uuid: string) {
         return this.repository.findOne({
             where: { uuid: uuid },
-            relations: ['decks'],
+            relations: ['decks', 'units'],
         });
     }
 
