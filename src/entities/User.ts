@@ -169,10 +169,16 @@ export class User {
     updateCurrency(idx: number, count: number) {
         switch (idx) {
             case 0:
+                // dia
                 break;
             case 1:
+                // coin
                 break;
             case 2:
+                // energy
+                break;
+            case 3:
+                // dogtag
                 break;
         }
     }
