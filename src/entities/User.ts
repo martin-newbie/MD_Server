@@ -146,12 +146,12 @@ export class User {
     getEnergy() {
 
         if (!this.str_last_energy_updated) { this.str_last_energy_updated = new Date().toJSON(); }
-        const last_energy_updated = new Date(Date.parse(this.str_last_energy_updated));
+        const lastEnergyTime = new Date(Date.parse(this.str_last_energy_updated));
         
         if (this.energy < this.maxEnergy()) {
 
             const now = new Date();
-            const diff = now.getTime() - last_energy_updated.getTime();
+            const diff = now.getTime() - lastEnergyTime.getTime();
             const addedEnergy = Math.floor((diff / 1000) / 30);
             console.log(addedEnergy);
 
@@ -160,8 +160,8 @@ export class User {
                 this.energy = this.maxEnergy();
             }
 
-            last_energy_updated.setMilliseconds(addedEnergy * 1000 + last_energy_updated.getMilliseconds());
-            this.updateEnergyTime(last_energy_updated);
+            const newEnergyTime = new Date(lastEnergyTime.getTime() + addedEnergy * 1000 * 30);
+            this.updateEnergyTime(newEnergyTime);
         }
 
         return this.energy;
@@ -197,7 +197,6 @@ export class User {
     }
 
     updateEnergyTime(date: Date) {
-        if(!date || date.getTime() === 0) date = new Date();
         this.str_last_energy_updated = date.toJSON();
     }
 
