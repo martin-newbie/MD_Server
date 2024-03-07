@@ -130,7 +130,6 @@ export class User {
 
         if (this.items == null) {
             this.items = [];
-            throw new Exception(400, "item is empty");
         }
 
         const findItem = this.items.find(i => i.idx === item.idx);
