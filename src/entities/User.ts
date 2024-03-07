@@ -152,7 +152,7 @@ export class User {
 
             const now = new Date();
             const diff = now.getTime() - lastEnergyTime.getTime();
-            const addedEnergy = Math.floor((diff / 1000) / 30);
+            const addedEnergy = Math.floor((diff / 1000) / 360);
             console.log(addedEnergy);
 
             this.energy += addedEnergy;
@@ -160,7 +160,7 @@ export class User {
                 this.energy = this.maxEnergy();
             }
 
-            const newEnergyTime = new Date(lastEnergyTime.getTime() + addedEnergy * 1000 * 30);
+            const newEnergyTime = new Date(lastEnergyTime.getTime() + addedEnergy * 1000 * 360);
             this.updateEnergyTime(newEnergyTime);
         }
 
