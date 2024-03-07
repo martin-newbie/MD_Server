@@ -43,7 +43,7 @@ export class UserService{
             userData.level = 0;
             userData.exp = 0;
             userData.energy = 100;
-            userData.last_energy_updated = new Date();
+            userData.updateEnergyTime(new Date());
 
             userData.addUnit(new Unit(0));
             userData.addUnit(new Unit(1));

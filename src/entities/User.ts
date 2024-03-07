@@ -45,6 +45,8 @@ export class User {
 
     @Column({ default: null })
     @Required()
+    str_last_energy_updated: string;
+
     last_energy_updated: Date;
 
     @CollectionOf(Unit)
@@ -158,6 +160,7 @@ export class User {
             }
 
             this.last_energy_updated.setMilliseconds(addedEnergy * 1000 + this.last_energy_updated.getMilliseconds());
+            this.updateEnergyTime(this.last_energy_updated);
         }
 
         return this.energy;
@@ -183,10 +186,15 @@ export class User {
         }
 
         if (this.energy >= this.maxEnergy() && this.energy + updated < this.maxEnergy()) {
-            this.last_energy_updated = new Date();
+            this.updateEnergyTime(new Date());
         }
 
         this.energy += updated;
+    }
+
+    updateEnergyTime(date: Date) {
+        this.last_energy_updated = date;
+        this.str_last_energy_updated = date.toJSON();
     }
 
     maxEnergy() {
