@@ -31,12 +31,6 @@ export class InGameController {
             "stage_data": stageData,
         };
     }
-
-    @Post("/test-stage")
-    async testStage(@QueryParams("stage") stage: number, @QueryParams("chapter") chapter: number) {
-        const stageData = this.inGameService.findStageData(stage, chapter);
-        return stageData;
-    }
     
     @Post("/game-end")
     async gameEnd(@BodyParams("input_data") string_data: string) {
@@ -52,32 +46,6 @@ export class InGameController {
             "units": units,
         }
     }
-
-    @Post("/test-game-end")
-    async testGameEnd(@QueryParams("uuid") uuid: string, @QueryParams("condition_1") cond1: boolean, @QueryParams("condition_2") cond2: boolean, @QueryParams("condition_3") cond3: boolean, @QueryParams("stage") stage: number, @QueryParams("chapter") chapter: number) {
-        const data = new RecieveGameEnd();
-        data.uuid = uuid;
-        data.stage_index = stage;
-        data.chapter_index = chapter;
-        data.is_win = cond3;
-        data.perfaction = [cond1, cond2, cond3];
-        const reward = await this.inGameService.updateStageResult(data);
-
-        return {
-            "is_win": data.is_win,
-            "reward": reward,
-        }
-    }
-
-    @Post("/test-exp")
-    async testExp(@QueryParams("uuid") uuid: string, @QueryParams("deck_index") deckIndex: number, @QueryParams("exp") exp: number) {
-        const response = await this.inGameService.updateExp(uuid, deckIndex, exp);
-        return {
-            "success": true,
-            "response": response,
-        }
-    }
-
 }
 
 export class RecieveGameEnter{
