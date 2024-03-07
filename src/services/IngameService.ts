@@ -68,7 +68,6 @@ export class InGameService{
         }
 
         await this.userRepos.applyReward(user, reward);
-        await this.userRepos.saveUser(user);
         return reward;
     }
 

@@ -65,10 +65,11 @@ export class UserRepository {
         });
     }
     
-    async applyReward(user: User, reward: Reward[]) {
+    async applyReward(user: User, rewards: Reward[]) {
 
-        reward.forEach(async reward => {
-            switch(reward.type){
+        for (let i = 0; i < rewards.length; i++) {
+            const reward = rewards[i];
+            switch (reward.type) {
                 case 0:
                     const item = new Item(reward.index);
                     item.count = reward.count;
@@ -88,6 +89,8 @@ export class UserRepository {
                     }
                     break;
             }
-        });
+        }
+
+        await this.saveUser(user);
     }
 }
