@@ -43,6 +43,10 @@ export class User {
     @Required()
     energy: number;
 
+    @Column({default: 0})
+    @Required()
+    dogtag: number;
+
     @Required()
     str_last_energy_updated: string;
     
@@ -169,16 +173,16 @@ export class User {
     updateCurrency(idx: number, count: number) {
         switch (idx) {
             case 0:
-                // dia
+                this.dia += count;
                 break;
             case 1:
-                // coin
+                this.coin += count;
                 break;
             case 2:
-                // energy
+                this.updateEnergy(count);
                 break;
             case 3:
-                // dogtag
+                this.dogtag += count;
                 break;
         }
     }
