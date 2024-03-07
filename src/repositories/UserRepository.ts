@@ -86,7 +86,6 @@ export class UserRepository {
                         user.addUnit(new Unit(reward.index));
                     } else {
                         // TODO : add duplicated unit item
-                        user.updateCurrency(3, 1);
                     }
                     break;
             }

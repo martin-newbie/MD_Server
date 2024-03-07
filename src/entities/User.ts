@@ -43,10 +43,6 @@ export class User {
     @Required()
     energy: number;
 
-    @Column({default: 0})
-    @Required()
-    dogtag: number;
-
     @Required()
     str_last_energy_updated: string;
     
@@ -180,9 +176,6 @@ export class User {
                 break;
             case 2:
                 this.updateEnergy(count);
-                break;
-            case 3:
-                this.dogtag += count;
                 break;
         }
     }
