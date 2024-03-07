@@ -19,8 +19,10 @@ export class UserRepository {
         this.repository = this.datasource.getRepository(User);
     }
 
-    findUserByUUID(uuid: string) {
-        return this.repository.findOne({ where: { uuid: uuid } });
+    async findUserByUUID(uuid: string) {
+        const user = await this.repository.findOne({ where: { uuid: uuid } });
+        if(!user) throw new Exception(400, "no user available!");
+        return user;
     }
     isUserExists(nickname: string) {
         return this.repository.exists({ where: { nickname: nickname } });

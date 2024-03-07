@@ -2,6 +2,7 @@ import { Inject, Injectable } from "@tsed/di";
 import { MYSQL_DATASOURCE } from "../datasources/MysqlDatasource";
 import { Unit } from "../entities/Unit";
 import { DataSource, Repository } from "typeorm";
+import { Exception } from "@tsed/exceptions";
 
 
 
@@ -26,7 +27,9 @@ export class UnitRepository {
         this.saveUnit(unit);
     }
 
-    findWithId(id: number){
-        return this.repository.findOne({where: {id: id}});
+    async findWithId(id: number){
+        const unit = await this.repository.findOne({where: {id: id}});
+        if (!unit) throw new Exception(400, "no unit available!");
+        return unit;
     }
 }
