@@ -28,10 +28,14 @@ export class UserService{
         if (exist) {
             // login
             let userData = await this.userRepos.findUserByNicknameWithAllRelation(nickname);
+            if(!userData) throw new Exception(400, "big issue! no user available!");
+
             console.log("find existing user");
+            userData.updateEnergyTime(userData.last_energy_updated);
             userData?.units.forEach(unit => {
-                unit.skill_level = [unit.skill_level_0, unit.skill_level_1, unit.skill_level_2, unit.skill_level_3];
+                unit.initSkillLevel();
             });
+            
             return userData;
         } else {
             // create new

@@ -193,6 +193,8 @@ export class User {
     }
 
     updateEnergyTime(date: Date) {
+        if(!date || date.getTime() === 0) date = new Date();
+        
         this.last_energy_updated = date;
         this.str_last_energy_updated = date.toJSON();
     }
