@@ -43,6 +43,7 @@ export class User {
     @Required()
     energy: number;
 
+    @Column({default: null})
     @Required()
     str_last_energy_updated: string;
     
@@ -147,6 +148,9 @@ export class User {
     
     getEnergy() {
 
+        if(!this.str_last_energy_updated) this.str_last_energy_updated = new Date().toJSON();
+        if(!this.last_energy_updated) this.last_energy_updated = new Date();
+        
         if (this.energy < this.maxEnergy()) {
 
             const now = new Date();

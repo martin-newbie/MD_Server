@@ -31,11 +31,11 @@ export class UserService{
             if(!userData) throw new Exception(400, "big issue! no user available!");
 
             console.log("find existing user");
-            userData.updateEnergyTime(userData.last_energy_updated);
+            userData.energy = userData.getEnergy();
             userData?.units.forEach(unit => {
                 unit.initSkillLevel();
             });
-            
+            await this.userRepos.saveUser(userData);
             return userData;
         } else {
             // create new

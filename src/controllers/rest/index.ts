@@ -6,4 +6,5 @@ export * from "./InGameController";
 export * from "./LoadoutController";
 export * from "./LobbyController";
 export * from "./MainMenuController";
+export * from "./UnitController";
 export * from "./UserController";
