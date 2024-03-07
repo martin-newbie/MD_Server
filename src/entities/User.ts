@@ -43,10 +43,10 @@ export class User {
     @Required()
     energy: number;
 
-    @Column({ default: null })
     @Required()
     str_last_energy_updated: string;
-
+    
+    @Column({ default: null })
     last_energy_updated: Date;
 
     @CollectionOf(Unit)
@@ -194,7 +194,7 @@ export class User {
 
     updateEnergyTime(date: Date) {
         if(!date || date.getTime() === 0) date = new Date();
-        
+
         this.last_energy_updated = date;
         this.str_last_energy_updated = date.toJSON();
     }
