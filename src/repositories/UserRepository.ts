@@ -2,6 +2,10 @@ import { Inject, Injectable } from "@tsed/di";
 import { User } from "../entities/User";
 import { DataSource, Repository } from "typeorm";
 import { MYSQL_DATASOURCE } from "../datasources/MysqlDatasource";
+import { Reward } from "../services/IngameService";
+import { Item } from "../entities/Item";
+import { Exception } from "@tsed/exceptions";
+import { Unit } from "../entities/Unit";
 
 @Injectable()
 export class UserRepository {
@@ -58,6 +62,32 @@ export class UserRepository {
         return this.repository.findOne({
             where: {uuid: uuid},
             relations: ['stage_result']
+        });
+    }
+    
+    async applyReward(user: User, reward: Reward[]) {
+
+        reward.forEach(async reward => {
+            switch(reward.type){
+                case 0:
+                    const item = new Item(reward.index);
+                    item.count = reward.count;
+                    user.addItem(item);
+                    break;
+                case 1:
+                    user.updateCurrency(reward.index, reward.count);
+                    break;
+                case 2:
+                    const units = (await this.findUserUnits(user.uuid))?.units;
+                    if(!units) throw Exception;
+
+                    if (!units.some(unit => unit.index === reward.index)) {
+                        user.addUnit(new Unit(reward.index));
+                    } else {
+                        // TODO : add duplicated unit item
+                    }
+                    break;
+            }
         });
     }
 }

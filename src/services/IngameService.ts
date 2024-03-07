@@ -2,9 +2,9 @@ import { Inject, Injectable } from "@tsed/di";
 import { UserRepository } from "../repositories/UserRepository";
 import * as fs from 'fs';
 import { RecieveGameEnd } from "../controllers/rest";
-import { UserService } from "./UserService";
 import { StageResult } from "../entities/StageResult";
 import { UnitRepository } from "../repositories/UnitRepository";
+import { StageRepository } from "../repositories/StageRepository";
 
 @Injectable()
 export class InGameService{
@@ -13,10 +13,9 @@ export class InGameService{
     protected userRepos: UserRepository;
     @Inject()
     protected unitRepos: UnitRepository;
-    
     @Inject()
-    protected userService: UserService;    
-
+    protected stageRepos: StageRepository;
+    
     findStageData(stage: number, chapter: number) {
         const path = `./src/data/stage/${chapter}.json`;
         const data = fs.readFileSync(path, 'utf8');
@@ -26,7 +25,8 @@ export class InGameService{
     
     async updateStageResult(data: RecieveGameEnd) {
         const reward: Reward[] = [];
-        const user = await this.userService.findUserWithStageResult(data.uuid);
+        const user = await this.userRepos.findUserStageResult(data.uuid);
+        if(!user) throw new Error('user not found');
 
         if (data.is_win) {
             const stageResult = user.stage_result.find((result) => result.chapter_idx == data.chapter_index && result.stage_idx == data.stage_index);
@@ -58,7 +58,7 @@ export class InGameService{
                     stageResult.condition_1 = stageResult.condition_1 || data.perfaction[0];
                     stageResult.condition_2 = stageResult.condition_2 || data.perfaction[1];
                     stageResult.condition_3 = stageResult.condition_3 || data.perfaction[2];
-                    this.userService.updateStageResult(stageResult);
+                    this.stageRepos.saveStage(stageResult);
                 }
             }
 
@@ -67,7 +67,8 @@ export class InGameService{
             reward.push(new Reward(1, 1, Math.floor(data.use_energy * 0.9)));
         }
 
-        await this.userService.applyReward(user, reward);
+        await this.userRepos.applyReward(user, reward);
+        await this.userRepos.saveUser(user);
         return reward;
     }
 

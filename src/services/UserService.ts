@@ -7,8 +7,6 @@ import { Deck } from "../entities/Deck";
 import { Exception } from "@tsed/exceptions";
 import { ItemRepository } from "../repositories/ItemRepository";
 import { Item } from "../entities/Item";
-import { Reward } from "./IngameService";
-import { StageResult } from "../entities/StageResult";
 import { StageRepository } from "../repositories/StageRepository";
 
 @Injectable()
@@ -98,44 +96,12 @@ export class UserService{
     async updateUser(user: User){
         this.userRepos.saveUser(user);
     }
-
-    async updateStageResult(stageResult: StageResult) {
-        this.stageRepos.saveStage(stageResult);
-    }
-
+    
     async updateItem(item: Item){
         if (item.count == 0) {
             this.itemRepos.deleteItem(item);
         } else {
             this.itemRepos.updateItem(item);
         }
-    }
-
-    async applyReward(user: User, reward: Reward[]) {
-
-        reward.forEach(async reward => {
-            switch(reward.type){
-                case 0:
-                    const item = new Item(reward.index);
-                    item.count = reward.count;
-                    user.addItem(item);
-                    break;
-                case 1:
-                    user.updateCurrency(reward.index, reward.count);
-                    break;
-                case 2:
-                    const units = (await this.userRepos.findUserUnits(user.uuid))?.units;
-                    if(!units) throw Exception;
-
-                    if (!units.some(unit => unit.index === reward.index)) {
-                        user.addUnit(new Unit(reward.index));
-                    } else {
-                        // TODO : add duplicated unit item
-                    }
-                    break;
-            }
-        });
-
-        await this.userRepos.saveUser(user);
     }
 }
