@@ -25,4 +25,8 @@ export class UnitRepository {
         unit.updateExp(exp);
         this.saveUnit(unit);
     }
+
+    findWithId(id: number){
+        return this.repository.findOne({where: {id: id}});
+    }
 }
