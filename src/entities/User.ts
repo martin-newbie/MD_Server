@@ -47,9 +47,6 @@ export class User {
     @Required()
     str_last_energy_updated: string;
     
-    @Column({ default: null })
-    last_energy_updated: Date;
-
     @CollectionOf(Unit)
     @OneToMany(type => Unit, (units) => units.user, { cascade: ['insert'] })
     @JoinColumn({ name: 'uuid', referencedColumnName: 'user_uuid' })
@@ -149,21 +146,21 @@ export class User {
     getEnergy() {
 
         if(!this.str_last_energy_updated) this.str_last_energy_updated = new Date().toJSON();
-        if(!this.last_energy_updated) this.last_energy_updated = new Date();
+        const last_energy_updated = new Date(Date.parse(this.str_last_energy_updated));
         
         if (this.energy < this.maxEnergy()) {
 
             const now = new Date();
-            const diff = now.getTime() - this.last_energy_updated.getTime();
-            const addedEnergy = Math.floor((diff / 1000) / 60);
+            const diff = now.getTime() - last_energy_updated.getTime();
+            const addedEnergy = Math.floor((diff / 1000) / 360);
 
             this.energy += addedEnergy;
             if (this.energy > this.maxEnergy()) {
                 this.energy = this.maxEnergy();
             }
 
-            this.last_energy_updated.setMilliseconds(addedEnergy * 1000 + this.last_energy_updated.getMilliseconds());
-            this.updateEnergyTime(this.last_energy_updated);
+            last_energy_updated.setMilliseconds(addedEnergy * 1000 + last_energy_updated.getMilliseconds());
+            this.updateEnergyTime(last_energy_updated);
         }
 
         return this.energy;
@@ -200,8 +197,6 @@ export class User {
 
     updateEnergyTime(date: Date) {
         if(!date || date.getTime() === 0) date = new Date();
-
-        this.last_energy_updated = date;
         this.str_last_energy_updated = date.toJSON();
     }
 
