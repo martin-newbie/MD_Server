@@ -12,7 +12,6 @@ export class InGameController {
 
     @Inject()
     protected userService: UserService;
-
     
     @Post("/game-enter")
     async gameEnter(@BodyParams("input_data") string_data: string) {

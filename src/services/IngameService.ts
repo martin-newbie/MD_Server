@@ -32,14 +32,13 @@ export class InGameService{
             const stageResult = user.stage_result.find((result) => result.chapter_idx == data.chapter_index && result.stage_idx == data.stage_index);
 
             if (data.perfaction[0] && data.perfaction[1] && data.perfaction[2]) {
-                if (!stageResult) {
-                    // 초회 3별
-                    reward.push(new Reward(1, 0, 40));
-                } else if (stageResult.isAllConditionTrue()) {
+                if (stageResult && stageResult.isAllConditionTrue()) {
                     // 중복 3별
+                    console.log('all condition true');
                 } else {
                     // 재도전 3별
                     reward.push(new Reward(1, 0, 40));
+                    console.log('not all condition true');
                 }
             }
 
@@ -50,7 +49,7 @@ export class InGameService{
                 result.condition_1 = data.perfaction[0];
                 result.condition_2 = data.perfaction[1];
                 result.condition_3 = data.perfaction[2];
-                reward.push(new Reward(1, 0, 30));
+                reward.push(new Reward(1, 0, 40));
                 user.addStageResult(result);
             } else {
                 if (!stageResult.isAllConditionTrue()) {
