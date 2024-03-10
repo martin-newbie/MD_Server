@@ -19,17 +19,15 @@ export class StageResult {
     stage_idx: number;
 
     @Column()
-    @Required()
     condition_1: boolean;
 
     @Column()
-    @Required()
     condition_2: boolean;
 
     @Column()
-    @Required()
     condition_3: boolean;
 
+    @Required()
     condition: boolean[];
 
     @ManyToOne(()=>User, (user) => user.stage_result)
