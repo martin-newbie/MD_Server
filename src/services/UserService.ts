@@ -32,8 +32,11 @@ export class UserService{
 
             console.log("find existing user");
             userData.energy = userData.getEnergy();
-            userData?.units.forEach(unit => {
+            userData.units.forEach(unit => {
                 unit.initSkillLevel();
+            });
+            userData.stage_result.forEach(stage => {
+                stage.initCondition();
             });
             await this.userRepos.saveUser(userData);
             return userData;

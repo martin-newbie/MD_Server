@@ -30,10 +30,16 @@ export class StageResult {
     @Required()
     condition_3: boolean;
 
+    condition: boolean[];
+
     @ManyToOne(()=>User, (user) => user.stage_result)
     user: User;
 
     isAllConditionTrue(){
         return this.condition_1 && this.condition_2 && this.condition_3;
+    }
+
+    initCondition(){
+        this.condition = [this.condition_1, this.condition_2, this.condition_3];
     }
 }
