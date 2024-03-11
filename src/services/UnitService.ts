@@ -45,6 +45,14 @@ export class UnitService {
         await this.saveData(user, unit);
     }
 
+    async findUnitById(id: number) {
+        return await this.unitRepos.findWithId(id);
+    }
+
+    async updateUnit(unit: Unit){
+        return await this.unitRepos.saveUnit(unit);
+    }
+
     private useItem(user: User, items: Item[], coin: number) {
         items.forEach(item => {
             user.useItem(item);

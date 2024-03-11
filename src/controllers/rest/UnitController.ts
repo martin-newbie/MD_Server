@@ -1,8 +1,9 @@
 import { Controller, Inject } from "@tsed/di";
 import { Item } from "../../entities/Item";
-import { QueryParams } from "@tsed/platform-params";
+import { BodyParams, QueryParams } from "@tsed/platform-params";
 import { UnitService } from "../../services/UnitService";
 import { Post } from "@tsed/schema";
+import { Equipment } from "../../entities/Equipment";
 
 @Controller("/unit")
 export class UnitController{
@@ -26,6 +27,23 @@ export class UnitController{
     async upgradeUnitRank(@QueryParams("input_data") string_data: string) {
         const data: RecieveUnitRankUp = JSON.parse(string_data);
         await this.unitService.upgradeUnitRank(data.uuid, data.id, data.use_items, data.use_coin);
+    }
+
+    @Post("/test-equipment-add")
+    async testEquipmentAdd(@BodyParams("unit_id") unit_id: number, @BodyParams("pos") pos: number) {
+        const unit = await this.unitService.findUnitById(unit_id);
+        const equipment = new Equipment();
+        equipment.place_index = pos;
+        unit.addEuquipment(equipment);
+        this.unitService.updateUnit(unit);
+        return equipment;
+    }
+
+    @Post("/test-find-equipment")
+    async testFindEquipment(@BodyParams("id") id: number) {
+        const unit = await this.unitService.findUnitById(id);
+        const equipments = unit.equipments;
+        return equipments;
     }
 }
 

@@ -1,7 +1,8 @@
-import { Required } from '@tsed/schema';
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { CollectionOf, Required } from '@tsed/schema';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { User } from './User';
 import fs from 'fs';
+import { Equipment } from './Equipment';
 
 
 @Entity({name: 'unit'})
@@ -54,6 +55,20 @@ export class Unit {
     @ManyToOne(() => User, (user) => user.units, {})
     @JoinColumn({ name: "user_uuid", referencedColumnName: "uuid" })
     user: User;
+
+    @CollectionOf(Equipment)
+    @OneToMany(()=>Equipment, (equipment) => equipment.unit, {cascade: ['insert']})
+    @JoinColumn({name: 'id', referencedColumnName: 'unit_id'})
+    equipments: Equipment[];
+
+    addEuquipment(equipment: Equipment){
+        if (!this.equipments) {
+            this.equipments = [];
+        }
+
+        this.equipments.push(equipment);
+        equipment.unit = this;
+    }
 
     updateExp(extra: number) {
         this.exp += extra;

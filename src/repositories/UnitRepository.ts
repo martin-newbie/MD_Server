@@ -28,7 +28,7 @@ export class UnitRepository {
     }
 
     async findWithId(id: number){
-        const unit = await this.repository.findOne({where: {id: id}});
+        const unit = await this.repository.findOne({where: {id: id}, relations: ['equipments']});
         if (!unit) throw new Exception(400, "no unit available!");
         return unit;
     }
