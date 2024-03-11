@@ -1,6 +1,7 @@
 import { Required } from "@tsed/schema";
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Unit } from "./Unit";
+import fs from 'fs';
 
 @Entity('equipment')
 export class Equipment {
@@ -32,6 +33,16 @@ export class Equipment {
 
     updateExp(extra: number) {
         this.exp += extra;
-        
+        while (this.exp >= this.getRequireExp(this.level)) {
+            this.exp -= this.getRequireExp(this.level);
+            this.level++;
+        }
+    }
+
+    getRequireExp(level: number) {
+        const dataPath = 'src/data/equipmentExpTable.txt';
+        const data = fs.readFileSync(dataPath, 'utf8');
+        const levelExp = Number.parseInt(data.split('\n')[level]);
+        return levelExp;
     }
 }
