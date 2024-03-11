@@ -20,6 +20,10 @@ export class Equipment {
     @Required()
     level: number;
 
+    @Column({default:0 })
+    @Required()
+    tier: number;
+
     @Column({default: 0})
     @Required()
     exp: number;

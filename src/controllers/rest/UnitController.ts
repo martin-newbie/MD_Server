@@ -35,21 +35,21 @@ export class UnitController{
         await this.unitService.upgradeUnitEqupment(data.uuid, data.id, data.use_items, data.use_coin, data.place, data.update_exp);
     }
 
-    @Post("/test-equipment-add")
-    async testEquipmentAdd(@BodyParams("unit_id") unit_id: number, @BodyParams("pos") pos: number) {
-        const unit = await this.unitService.findUnitById(unit_id);
-        const equipment = new Equipment();
-        equipment.place_index = pos;
-        unit.addEuquipment(equipment);
-        this.unitService.updateUnit(unit);
-        return equipment;
+    @Post("/upgrade-equipment-tier")
+    async upgradeEquipmentTier(@QueryParams("input_data") string_data: string) {
+        const data: RecieveEquipmentTierUp = JSON.parse(string_data);
+        await this.unitService.upgradeUnitEquipmentTier(data.uuid, data.id, data.use_items, data.use_coin, data.place);
     }
 
-    @Post("/test-find-equipment")
-    async testFindEquipment(@BodyParams("id") id: number) {
-        const unit = await this.unitService.findUnitById(id);
-        const equipments = unit.equipments;
-        return equipments;
+    @Post("/test-equipment-upgrade")
+    async testUpgrade(){
+        const uuid = "84a543d9-3b7b-4365-a278-045b4df3292d";
+        const id = 1;
+        const use_items: Item[] = [];
+        const use_coin = 0;
+        const place = 0;
+        const result = await this.unitService.upgradeUnitEquipmentTier(uuid, id, use_items, use_coin, place);
+        return result;
     }
 }
 
@@ -83,4 +83,12 @@ export class RecieveEquipmentUp{
     use_items: Item[];
     use_coin: number;
     update_exp: number;
+}
+
+export class RecieveEquipmentTierUp{
+    uuid: string;
+    id: number;
+    place: number;
+    use_items: Item[];
+    use_coin: number;
 }
