@@ -87,6 +87,7 @@ export class Unit {
 
     initSkillLevel(){
         this.skill_level = [this.skill_level_0, this.skill_level_1, this.skill_level_2, this.skill_level_3];
+        if(!this.equipments) this.equipments = [];
         return this;
     }
 }
