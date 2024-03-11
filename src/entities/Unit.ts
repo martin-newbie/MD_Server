@@ -61,7 +61,7 @@ export class Unit {
     @JoinColumn({name: 'id', referencedColumnName: 'unit_id'})
     equipments: Equipment[];
 
-    addEuquipment(equipment: Equipment){
+    addEquipment(equipment: Equipment){
         if (!this.equipments) {
             this.equipments = [];
         }
