@@ -29,4 +29,9 @@ export class Equipment {
     @ManyToOne(type => Unit, (unit) => unit.equipments)
     @JoinColumn({name: 'unit_id', referencedColumnName: 'id'})
     unit: Unit;
+
+    updateExp(extra: number) {
+        this.exp += extra;
+        
+    }
 }

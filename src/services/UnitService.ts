@@ -45,6 +45,15 @@ export class UnitService {
         await this.saveData(user, unit);
     }
 
+    async upgradeUnitEqupment(uuid: string, id: number, use_items: Item[], use_coin: number, place: number, update_exp: number) {
+        const user = await this.userRepos.findUserByUUID(uuid);
+        const unit = await this.unitRepos.findWithId(id);
+        const equipment = unit.equipments.find(e => e.place_index === place);
+        equipment?.updateExp(update_exp);
+        this.useItem(user, use_items, use_coin);
+        await this.saveData(user, unit);
+    }
+
     async findUnitById(id: number) {
         return await this.unitRepos.findWithId(id);
     }

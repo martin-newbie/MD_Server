@@ -28,6 +28,12 @@ export class UnitController{
         const data: RecieveUnitRankUp = JSON.parse(string_data);
         await this.unitService.upgradeUnitRank(data.uuid, data.id, data.use_items, data.use_coin);
     }
+    
+    @Post("/upgrade-equipment")
+    async upgradeEquipment(@QueryParams("input_data") string_data: string) {
+        const data: RecieveEquipmentUp = JSON.parse(string_data);
+        await this.unitService.upgradeUnitEqupment(data.uuid, data.id, data.use_items, data.use_coin, data.place, data.update_exp);
+    }
 
     @Post("/test-equipment-add")
     async testEquipmentAdd(@BodyParams("unit_id") unit_id: number, @BodyParams("pos") pos: number) {
@@ -68,4 +74,13 @@ export class RecieveUnitRankUp{
     id: number;
     use_items: Item[];
     use_coin: number;
+}
+
+export class RecieveEquipmentUp{
+    uuid: string;
+    id: number;
+    place: number;
+    use_items: Item[];
+    use_coin: number;
+    update_exp: number;
 }
