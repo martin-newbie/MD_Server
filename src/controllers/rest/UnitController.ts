@@ -1,6 +1,6 @@
 import { Controller, Inject } from "@tsed/di";
 import { Item } from "../../entities/Item";
-import { BodyParams, QueryParams } from "@tsed/platform-params";
+import { BodyParams } from "@tsed/platform-params";
 import { UnitService } from "../../services/UnitService";
 import { Post } from "@tsed/schema";
 
