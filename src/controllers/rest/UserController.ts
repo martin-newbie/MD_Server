@@ -35,6 +35,14 @@ export class UserController{
         await this.getItem(data.uuid, data.item_idx, data.count);
     }
 
+    @Post("/get-many-item")
+    async postGetManyItems(@BodyParams("input_data") string_data: string){
+        const data: RecieveGetItem[] = JSON.parse(string_data);
+        for (const d of data) {
+            await this.getItem(d.uuid, d.item_idx, d.count);
+        }
+    }
+
     @Post("/use-item")
     async postUseItem(@BodyParams("input_data") string_data: string){
         const data: RecieveGetItem = JSON.parse(string_data);
