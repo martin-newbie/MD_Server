@@ -20,7 +20,7 @@ export class UserRepository {
     }
 
     async findUserByUUID(uuid: string) {
-        const user = await this.repository.findOne({ where: { uuid: uuid } });
+        const user = await this.repository.findOne({ where: { uuid: uuid }, relations: ['items'] });
         if(!user) throw new Exception(400, "no user available!");
         return user;
     }
