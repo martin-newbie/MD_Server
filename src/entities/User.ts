@@ -115,9 +115,9 @@ export class User {
         }
 
         const findItem = this.items.find(i => i.idx === item.idx);
-
         if (findItem) {
             findItem.count += item.count;
+            return findItem;
         } else {
             this.items.push(item);
             item.user = this;
