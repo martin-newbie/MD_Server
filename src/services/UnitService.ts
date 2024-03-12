@@ -6,6 +6,7 @@ import { User } from "../entities/User";
 import { Unit } from "../entities/Unit";
 import { Exception } from "@tsed/exceptions";
 import { EquipmentRepository } from "../repositories/EquipmentRepository";
+import { ItemRepository } from "../repositories/ItemRepository";
 
 @Injectable()
 export class UnitService {
@@ -16,6 +17,8 @@ export class UnitService {
     userRepos: UserRepository;
     @Inject()
     equipmentRepos: EquipmentRepository;
+    @Inject()
+    itemRepos: ItemRepository;
 
     async upgradeUnitLevel(uuid: string, id: number, use_items: Item[], use_coin: number, updated_exp: number) {
         const user = await this.userRepos.findUserByUUID(uuid);
@@ -23,7 +26,7 @@ export class UnitService {
 
         unit.updateExp(updated_exp);
         this.useItem(user, use_items, use_coin);
-        await this.saveData(user, unit);
+        await this.saveData(unit);
     }
 
     async upgradeUnitSkillLevel(uuid: string, id: number, use_items: Item[], use_coin: number, skill_index: number) {
@@ -38,7 +41,7 @@ export class UnitService {
         }
 
         this.useItem(user, use_items, use_coin);
-        await this.saveData(user, unit);
+        await this.saveData(unit);
     }
 
     async upgradeUnitRank(uuid: string, id: number, use_items: Item[], use_coin: number) {
@@ -47,7 +50,7 @@ export class UnitService {
 
         unit.rank++;
         this.useItem(user, use_items, use_coin);
-        await this.saveData(user, unit);
+        await this.saveData(unit);
     }
 
     async upgradeUnitEqupment(uuid: string, id: number, use_items: Item[], use_coin: number, place: number, update_exp: number) {
@@ -56,7 +59,7 @@ export class UnitService {
         const equipment = unit.equipments.find(e => e.place_index === place);
         equipment?.updateExp(update_exp);
         this.useItem(user, use_items, use_coin);
-        await this.saveData(user, unit);
+        await this.saveData(unit);
     }
 
     async upgradeUnitEquipmentTier(uuid: string, id: number, use_items: Item[], use_coin: number, place: number) {
@@ -66,8 +69,8 @@ export class UnitService {
         if(!equipment) throw new Exception(400, "no equipment available");
 
         equipment.tier++;
-        this.useItem(user, use_items, use_coin);
-        await this.saveData(user, unit);
+        await this.useItem(user, use_items, use_coin);
+        await this.saveData(unit);
         await this.equipmentRepos.updateEquipment(equipment);
         return equipment;
     }
@@ -80,15 +83,21 @@ export class UnitService {
         return await this.unitRepos.saveUnit(unit);
     }
 
-    private useItem(user: User, items: Item[], coin: number) {
-        items.forEach(item => {
+    private async useItem(user: User, items: Item[], coin: number) {
+        for (let i = 0; i < items.length; i++) {
+            const item = items[i];
             user.useItem(item);
-        });
+            await this.updateItem(item);
+        }
         user.coin -= coin;
+        this.userRepos.saveUser(user);
     }
 
-    private async saveData(user: User, unit: Unit) {
+    private async saveData(unit: Unit) {
         await this.unitRepos.saveUnit(unit);
-        await this.userRepos.saveUser(user);
+    }
+
+    private async updateItem(item: Item){
+        await this.itemRepos.updateItem(item);
     }
 }
