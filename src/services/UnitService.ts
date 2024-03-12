@@ -86,8 +86,7 @@ export class UnitService {
     private async useItem(user: User, items: Item[], coin: number) {
         for (let i = 0; i < items.length; i++) {
             const item = items[i];
-            user.useItem(item);
-            await this.updateItem(item);
+            await this.updateItem(user.useItem(item));
         }
         user.coin -= coin;
         this.userRepos.saveUser(user);
