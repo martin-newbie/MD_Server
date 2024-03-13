@@ -1,1 +1,1 @@
-{"uploadAsLocalhost":true,"title":"TierData","upgrade_data":[{"item_require":10,"coin_require":0},{"item_require":15,"coin_require":0},{"item_require":30,"coin_require":0},{"item_require":45,"coin_require":0}]}
+{"uploadAsLocalhost":true,"title":"TierData","upgrade_data":[{"item_require":30,"coin_require":10000},{"item_require":80,"coin_require":40000},{"item_require":100,"coin_require":200000},{"item_require":150,"coin_require":1000000}]}
