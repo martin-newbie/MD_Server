@@ -1,0 +1,1 @@
+{"uploadAsLocalhost":true,"title":"TierData","upgrade_data":[{"item_require":10,"coin_require":0},{"item_require":15,"coin_require":0},{"item_require":30,"coin_require":0},{"item_require":45,"coin_require":0}]}
