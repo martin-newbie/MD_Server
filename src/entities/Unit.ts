@@ -3,6 +3,7 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColum
 import { User } from './User';
 import fs from 'fs';
 import { Equipment } from './Equipment';
+import { ExpData } from 'src/controllers/rest';
 
 
 @Entity({name: 'unit'})
@@ -81,7 +82,7 @@ export class Unit {
     getRequireExp(level: number) {
         const dataPath = 'src/data/UnitExp.txt';
         const data = fs.readFileSync(dataPath, 'utf8');
-        const levelExp = Number.parseInt(data.split('\n')[level]);
+        const levelExp = JSON.parse(data).exp[level];
         return levelExp;
     }
 

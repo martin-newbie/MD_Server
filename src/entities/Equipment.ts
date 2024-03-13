@@ -46,7 +46,7 @@ export class Equipment {
     getRequireExp(level: number) {
         const dataPath = 'src/data/EquipmentExp.txt';
         const data = fs.readFileSync(dataPath, 'utf8');
-        const levelExp = Number.parseInt(data.split('\n')[level]);
+        const levelExp = JSON.parse(data).exp[level];
         return levelExp;
     }
 }

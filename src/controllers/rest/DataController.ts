@@ -21,3 +21,7 @@ export class RecieveUploadData{
     title: string;
     data: string;
 }
+
+export class ExpData{
+    exp: number[] = [];
+}
