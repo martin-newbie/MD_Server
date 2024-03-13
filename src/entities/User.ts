@@ -76,7 +76,7 @@ export class User {
     }
 
     getRequireExp(level: number) {
-        const dataPath = 'src/data/userExpTable.txt';
+        const dataPath = 'src/data/UserExp.txt';
         const data = fs.readFileSync(dataPath, 'utf-8');
         const exp = Number.parseInt(data.split('\n')[level]);
         return exp;

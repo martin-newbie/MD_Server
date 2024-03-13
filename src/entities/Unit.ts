@@ -79,7 +79,7 @@ export class Unit {
     }
 
     getRequireExp(level: number) {
-        const dataPath = 'src/data/unitExpTable.txt';
+        const dataPath = 'src/data/UnitExp.txt';
         const data = fs.readFileSync(dataPath, 'utf8');
         const levelExp = Number.parseInt(data.split('\n')[level]);
         return levelExp;
