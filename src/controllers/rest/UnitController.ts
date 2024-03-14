@@ -39,17 +39,6 @@ export class UnitController{
         const data: RecieveEquipmentTierUp = JSON.parse(string_data);
         await this.unitService.upgradeUnitEquipmentTier(data.uuid, data.id, data.use_items, data.use_coin, data.place);
     }
-
-    @Post("/test-equipment-upgrade")
-    async testUpgrade(){
-        const uuid = "84a543d9-3b7b-4365-a278-045b4df3292d";
-        const id = 1;
-        const use_items: Item[] = [];
-        const use_coin = 0;
-        const place = 0;
-        const result = await this.unitService.upgradeUnitEquipmentTier(uuid, id, use_items, use_coin, place);
-        return result;
-    }
 }
 
 export class RecieveUnitLevelUp {
