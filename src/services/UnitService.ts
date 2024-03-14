@@ -7,6 +7,7 @@ import { Unit } from "../entities/Unit";
 import { Exception } from "@tsed/exceptions";
 import { EquipmentRepository } from "../repositories/EquipmentRepository";
 import { ItemRepository } from "../repositories/ItemRepository";
+import { Equipment } from "../entities/Equipment";
 
 @Injectable()
 export class UnitService {
@@ -26,7 +27,7 @@ export class UnitService {
 
         unit.updateExp(updated_exp);
         this.useItem(user, use_items, use_coin);
-        await this.saveData(unit);
+        await this.saveUnitData(unit);
     }
 
     async upgradeUnitSkillLevel(uuid: string, id: number, use_items: Item[], use_coin: number, skill_index: number) {
@@ -41,7 +42,7 @@ export class UnitService {
         }
 
         this.useItem(user, use_items, use_coin);
-        await this.saveData(unit);
+        await this.saveUnitData(unit);
     }
 
     async upgradeUnitRank(uuid: string, id: number, use_items: Item[], use_coin: number) {
@@ -50,19 +51,31 @@ export class UnitService {
 
         unit.rank++;
         this.useItem(user, use_items, use_coin);
-        await this.saveData(unit);
+        await this.saveUnitData(unit);
     }
 
-    async upgradeUnitEqupment(uuid: string, id: number, use_items: Item[], use_coin: number, place: number, update_exp: number) {
+    async addEquipment(id: number, place: number, index: number) {
+        const equipment = new Equipment();
+        equipment.place_index = place;
+        equipment.index = index;
+        
+        const unit = await this.unitRepos.findWithId(id);
+        unit.addEquipment(equipment);
+        await this.saveUnitData(unit);
+    }
+
+    async upgradeEqupment(uuid: string, id: number, use_items: Item[], use_coin: number, place: number, update_exp: number) {
         const user = await this.userRepos.findUserByUUID(uuid);
         const unit = await this.unitRepos.findWithId(id);
         const equipment = unit.equipments.find(e => e.place_index === place);
-        equipment?.updateExp(update_exp);
+        if(!equipment) throw new Exception(400, "no equipment available");
+
+        equipment.updateExp(update_exp);
         this.useItem(user, use_items, use_coin);
-        await this.saveData(unit);
+        await this.saveEquipmentData(equipment);
     }
 
-    async upgradeUnitEquipmentTier(uuid: string, id: number, use_items: Item[], use_coin: number, place: number) {
+    async upgradeEquipmentTier(uuid: string, id: number, use_items: Item[], use_coin: number, place: number) {
         const user = await this.userRepos.findUserByUUID(uuid);
         const unit = await this.unitRepos.findWithId(id);
         const equipment = unit.equipments.find(e => e.place_index === place);
@@ -70,9 +83,7 @@ export class UnitService {
 
         equipment.tier++;
         await this.useItem(user, use_items, use_coin);
-        await this.saveData(unit);
-        await this.equipmentRepos.updateEquipment(equipment);
-        return equipment;
+        await this.saveEquipmentData(equipment);
     }
 
     async findUnitById(id: number) {
@@ -92,8 +103,12 @@ export class UnitService {
         this.userRepos.saveUser(user);
     }
 
-    private async saveData(unit: Unit) {
+    private async saveUnitData(unit: Unit) {
         await this.unitRepos.saveUnit(unit);
+    }
+
+    private async saveEquipmentData(equipment: Equipment){
+        await this.equipmentRepos.updateEquipment(equipment);
     }
 
     private async updateItem(item: Item){

@@ -27,17 +27,23 @@ export class UnitController{
         const data: RecieveUnitRankUp = JSON.parse(string_data);
         await this.unitService.upgradeUnitRank(data.uuid, data.id, data.use_items, data.use_coin);
     }
+
+    @Post("/unlock-equipment")
+    async unlockEquipment(@BodyParams("input_data") string_data: string) {
+        const data = JSON.parse(string_data);
+        await this.unitService.addEquipment(data.id, data.place, data.index);
+    }
     
     @Post("/upgrade-equipment")
     async upgradeEquipment(@BodyParams("input_data") string_data: string) {
         const data: RecieveEquipmentUp = JSON.parse(string_data);
-        await this.unitService.upgradeUnitEqupment(data.uuid, data.id, data.use_items, data.use_coin, data.place, data.update_exp);
+        await this.unitService.upgradeEqupment(data.uuid, data.id, data.use_items, data.use_coin, data.place, data.update_exp);
     }
 
     @Post("/upgrade-equipment-tier")
     async upgradeEquipmentTier(@BodyParams("input_data") string_data: string) {
         const data: RecieveEquipmentTierUp = JSON.parse(string_data);
-        await this.unitService.upgradeUnitEquipmentTier(data.uuid, data.id, data.use_items, data.use_coin, data.place);
+        await this.unitService.upgradeEquipmentTier(data.uuid, data.id, data.use_items, data.use_coin, data.place);
     }
 }
 
