@@ -25,7 +25,7 @@ export class UnitController{
     @Post("/upgrade-rank")
     async upgradeUnitRank(@BodyParams("input_data") string_data: string) {
         const data: RecieveUnitRankUp = JSON.parse(string_data);
-        await this.unitService.upgradeUnitRank(data.uuid, data.id, data.use_items, data.use_coin);
+        await this.unitService.upgradeUnitRank(data.uuid, data.id, data.use_item, data.use_coin);
     }
 
     @Post("/unlock-equipment")
@@ -66,7 +66,7 @@ export class RecieveUnitSkillLevelUp{
 export class RecieveUnitRankUp{
     uuid: string;
     id: number;
-    use_items: Item[];
+    use_item: Item;
     use_coin: number;
 }
 

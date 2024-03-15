@@ -45,12 +45,12 @@ export class UnitService {
         await this.saveUnitData(unit);
     }
 
-    async upgradeUnitRank(uuid: string, id: number, use_items: Item[], use_coin: number) {
+    async upgradeUnitRank(uuid: string, id: number, use_item: Item, use_coin: number) {
         const user = await this.userRepos.findUserByUUID(uuid);
         const unit = await this.unitRepos.findWithId(id);
 
         unit.rank++;
-        this.useItem(user, use_items, use_coin);
+        this.useItem(user, [use_item], use_coin);
         await this.saveUnitData(unit);
     }
 
