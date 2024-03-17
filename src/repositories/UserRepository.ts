@@ -35,7 +35,7 @@ export class UserRepository {
     findUserByNicknameWithAllRelation(nickname: string) {
         return this.repository.findOne({
             where: { nickname: nickname },
-            relations: ['units', 'decks', 'stage_result', 'items'],
+            relations: ['units', 'units.equipments', 'decks', 'stage_result', 'items'],
         });
     }
 
