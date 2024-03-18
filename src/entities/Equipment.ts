@@ -29,6 +29,7 @@ export class Equipment {
     exp: number;
 
     @Column({default: 0})
+    @Required()
     unit_id: number;
 
     @ManyToOne(type => Unit, (unit) => unit.equipments)
