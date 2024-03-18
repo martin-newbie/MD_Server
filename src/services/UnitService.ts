@@ -82,6 +82,8 @@ export class UnitService {
         if(!equipment) throw new Exception(400, "no equipment available");
 
         equipment.tier++;
+        equipment.level = 0;
+        equipment.exp = 0;
         await this.useItem(user, use_items, use_coin);
         await this.saveEquipmentData(equipment);
     }
