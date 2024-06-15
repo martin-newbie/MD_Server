@@ -167,20 +167,6 @@ export class User {
         return this.energy;
     }
 
-    updateCurrency(idx: number, count: number) {
-        switch (idx) {
-            case 0:
-                this.dia += count;
-                break;
-            case 1:
-                this.coin += count;
-                break;
-            case 2:
-                this.updateEnergy(count);
-                break;
-        }
-    }
-
     updateEnergy(updated: number) {
 
         this.getEnergy();
@@ -194,6 +180,20 @@ export class User {
         }
 
         this.energy += updated;
+    }
+
+    updateCurrency(idx: number, count: number) {
+        switch (idx) {
+            case 0:
+                this.dia += count;
+                break;
+            case 1:
+                this.coin += count;
+                break;
+            case 2:
+                this.updateEnergy(count);
+                break;
+        }
     }
 
     updateEnergyTime(date: Date) {
